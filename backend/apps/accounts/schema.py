@@ -10,8 +10,26 @@ from .models import User
 from .types import UserType
 
 
+@strawberry.input
+class EmailInput:
+    email: str
+
+
+@strawberry.input
+class PasswordInput:
+    password: str
+
+
 @strawberry.type
 class Query:
+
+    @strawberry.field
+    def get_email(self, email_input: EmailInput) -> str:
+        return email_input.email
+
+    @strawberry.field
+    def get_password(self, password_input: PasswordInput) -> str:
+        return password_input.password
 
     @strawberry.field
     @login_required
@@ -34,8 +52,16 @@ class Mutation:
         return user
 
     @strawberry.mutation
-    def login(self, info, email: str, password: str) -> bool:
-        user = User.objects.get(email=email)
+    def login(
+        self, info, email_input: EmailInput, password_input: PasswordInput
+    ) -> bool:
+        email = email_input.email
+        password = password_input.password
+
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            return False
 
         if user.check_password(password):
             setattr(info.context, "userID", user.id)
