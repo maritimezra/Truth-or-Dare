@@ -24,6 +24,10 @@ class PasswordInput:
 class Query:
 
     @strawberry.field
+    def get_users(self, info) -> List[UserType]:
+        return User.objects.all()
+
+    @strawberry.field
     def get_email(self, email_input: EmailInput) -> str:
         return email_input.email
 
