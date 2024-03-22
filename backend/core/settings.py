@@ -40,9 +40,12 @@ INSTALLED_APPS = [
     "strawberry_jwt_auth",
     "apps.accounts",
     "apps.tod",
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -129,4 +132,8 @@ AUTH_USER_MODEL = "accounts.User"
 
 AUTHENTICATION_BACKENDS = [
     "strawberry_jwt_auth.utils.authentication.AuthenticationBackend"
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
 ]
