@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useMutation, gql } from '@apollo/client';
 
 const CREATE_USER = gql`
-  mutation MyMutation($email: String!, $password: String!) {
+  mutation ($email: String!, $password: String!) {
     createUser(email: $email, password: $password) {
       email
       id
