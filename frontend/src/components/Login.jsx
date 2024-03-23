@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { useMutation, gql } from '@apollo/client';
+import { useNavigate} from "react-router-dom"
 
 const LOGIN_USER = gql`
-  mutation MyMutation($email: String!, $password: String!) {
-    login(emailInput: { email: $email }, passwordInput: { password: $password })
+  mutation ($email: String!, $password: String!) {
+    login(email: $email, password: $password)
   }
 `;
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate  = useNavigate();
 
   const [loginUser] = useMutation(LOGIN_USER);
 
@@ -19,6 +21,7 @@ const Login = () => {
         if (result.data.login) {
           // Login successful, redirect or perform necessary actions
           console.log('Login successful');
+          navigate('/')
         } else {
           // Login failed, handle error or show error message
           console.error('Login failed');
