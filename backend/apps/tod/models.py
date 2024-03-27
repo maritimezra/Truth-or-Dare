@@ -2,14 +2,29 @@ from django.db import models
 import random
 from apps.accounts.models import User
 
+# from apps.config.models import Level, Category
 
-class GameOption(models.Model):
-    pass
+
+class Level(models.TextChoices):
+    MILD = "ML"
+    MODERATE = "MD"
+    WILD = "WD"
+
+
+class Category(models.TextChoices):
+    Romance = "R"
+    Travel = "T"
+    Work = "W"
+    Food = "F"
+    School = "S"
+    Sports = "P"
 
 
 class Lobby(models.Model):
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=256)
+    level = models.CharField(max_length=2, choices=Level, blank=True)
+    category = models.CharField(max_length=1, choices=Category, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

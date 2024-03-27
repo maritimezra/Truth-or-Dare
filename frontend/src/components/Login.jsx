@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useMutation, gql } from '@apollo/client';
-import { useNavigate} from "react-router-dom"
+import { Link, useNavigate } from 'react-router-dom';
 
 const LOGIN_USER = gql`
-  mutation ($email: String!, $password: String!) {
+  mutation Login($email: String!, $password: String!) {
     login(email: $email, password: $password)
   }
 `;
@@ -11,30 +11,33 @@ const LOGIN_USER = gql`
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate  = useNavigate();
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const [loginUser] = useMutation(LOGIN_USER);
 
-  const handleLogin = () => {
-    loginUser({ variables: { email, password } })
-      .then(result => {
-        if (result.data.login) {
-          // Login successful, redirect or perform necessary actions
-          console.log('Login successful');
-          navigate('/')
-        } else {
-          // Login failed, handle error or show error message
-          console.error('Login failed');
-        }
-      })
-      .catch(error => {
-        console.error('Error logging in:', error);
-      });
+  const handleLogin = async () => {
+    try {
+      setLoading(true);
+      const { data } = await loginUser({ variables: { email, password } });
+      if (data && data.login) {
+        console.log('Login successful');
+        navigate('/');
+      } else {
+        setError('Invalid email or password');
+      }
+    } catch (error) {
+      console.error('Error logging in:', error);
+      setError('An error occurred during login');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div>
-      <h2>Login Form</h2>
+      <h2>Login</h2>
       <input
         type="email"
         placeholder="Email"
@@ -47,7 +50,11 @@ const Login = () => {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <button onClick={handleLogin}>Log In</button>
+      <button onClick={handleLogin} disabled={loading}>
+        {loading ? 'Logging in...' : 'Log In'}
+      </button>
+      <p>Don't have an account? <Link to="/signup">Create one</Link></p>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
     </div>
   );
 };
