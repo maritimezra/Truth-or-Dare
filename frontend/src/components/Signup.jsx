@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useMutation, gql } from '@apollo/client';
+import { useNavigate } from 'react-router-dom';
 
 const CREATE_USER = gql`
   mutation ($email: String!, $password: String!) {
@@ -17,13 +18,15 @@ const Signup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const navigate = useNavigate();
+
   const [createUser] = useMutation(CREATE_USER);
 
   const handleSignup = () => {
     createUser({ variables: { email, password } })
       .then(result => {
         console.log('User created:', result.data.createUser);
-        // Handle success or update UI as needed
+        navigate('/login');
       })
       .catch(error => {
         console.error('Error creating user:', error);
@@ -33,7 +36,7 @@ const Signup = () => {
 
   return (
     <div>
-      <h2>Signup Form</h2>
+      <h2>Create Account</h2>
       <input
         type="email"
         placeholder="Email"

@@ -6,8 +6,16 @@ from django.utils.translation import gettext_lazy as _
 from .managers import UserManager
 
 
+class Gender(models.TextChoices):
+    MALE = "M"
+    FEMALE = "F"
+    NONBINARY = "N"
+
+
 class User(AbstractBaseUser, PermissionsMixin):
+    avatar = models.ImageField(upload_to="avatars/", blank=True)
     email = models.EmailField(_("email address"), unique=True)
+    gender = models.CharField(max_length=1, choices=Gender, blank=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
