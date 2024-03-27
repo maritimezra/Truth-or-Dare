@@ -1,5 +1,5 @@
 import strawberry
-from typing import List
+from typing import List, Optional
 from strawberry_django.optimizer import DjangoOptimizerExtension
 
 from strawberry_jwt_auth.extension import JWTExtension
@@ -27,13 +27,16 @@ class Query:
 class Mutation:
     @strawberry.mutation
     def create_user(
-        self,
         email: str,
         password: str,
+        username: str,
+        gender: str,
     ) -> UserType:
-        user = User.objects.create(
+        user = User.objects.create_user(
             email=email,
             password=password,
+            username=username,
+            gender=gender,
         )
         return user
 

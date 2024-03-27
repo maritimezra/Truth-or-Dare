@@ -13,6 +13,7 @@ class Gender(models.TextChoices):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    username = models.CharField(max_length=256, unique=True)
     avatar = models.ImageField(upload_to="avatars/", blank=True)
     email = models.EmailField(_("email address"), unique=True)
     gender = models.CharField(max_length=1, choices=Gender, blank=True)
@@ -20,7 +21,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
 
-    USERNAME_FIELD = "email"
+    USERNAME_FIELD = "username"
+    EMAIL_FIELD = "email"
     REQUIRED_FIELDS = []
 
     objects = UserManager()
