@@ -1,8 +1,6 @@
 from django.db import models
-import random
 from apps.accounts.models import User
-
-# from apps.config.models import Level, Category
+import random
 
 
 class Level(models.TextChoices):
@@ -21,7 +19,7 @@ class Category(models.TextChoices):
 
 
 class Lobby(models.Model):
-    creator = models.ForeignKey(User, on_delete=models.CASCADE)
+    creator = models.CharField(max_length=100)
     name = models.CharField(max_length=256)
     level = models.CharField(max_length=2, choices=Level, blank=True)
     category = models.CharField(max_length=1, choices=Category, blank=True)

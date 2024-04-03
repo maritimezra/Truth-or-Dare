@@ -17,6 +17,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     avatar = models.ImageField(upload_to="avatars/", blank=True)
     email = models.EmailField(_("email address"), unique=True)
     gender = models.CharField(max_length=1, choices=Gender, blank=True)
+    # todo: add age object
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
@@ -29,6 +30,3 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
-
-    def get_short_name(self):
-        return self.email.split("@")[0]

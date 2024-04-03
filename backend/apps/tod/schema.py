@@ -39,9 +39,25 @@ class Query:
 @strawberry.type
 class Mutation:
     @strawberry.mutation
-    def create_lobby(self, name: str, creator_id: int) -> LobbyType:
-        creator = User.objects.get(id=creator_id)
-        lobby = Lobby.objects.create(name=name, creator=creator)
+    def create_lobby(
+        self,
+        info,
+        name: str,
+        level: str,
+        category: str,
+    ) -> LobbyType:
+        request = info.context["request"]
+        user = request.user
+
+        if not user.is_authenticated:
+            raise Exception("You must be logged in to create a lobby.")
+
+        lobby = Lobby.objects.create(
+            name=name,
+            creator=user,
+            level=level,
+            category=category,
+        )
         return lobby
 
     @strawberry.mutation

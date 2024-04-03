@@ -8,8 +8,10 @@ from apps.accounts.types import UserType
 @strawberry_django.type(models.Lobby)
 class LobbyType:
     id: auto
-    creator: UserType
+    creator: str
     name: str
+    level: str
+    category: str
     created_at: str
 
 

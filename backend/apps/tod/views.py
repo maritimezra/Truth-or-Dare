@@ -1,3 +1,13 @@
-from django.shortcuts import render
+from django.http import HttpRequest
+from django.views.decorators.csrf import csrf_exempt
+from strawberry.django.views import GraphQLView as BaseGraphQLView
 
-# Create your views here.
+from backend.apps.accounts import schema
+
+
+class GraphQLView(BaseGraphQLView):
+    def get_context(self, request: HttpRequest):
+        return {"request": request}
+
+
+graphql_view = csrf_exempt(GraphQLView.as_view(schema=schema))
