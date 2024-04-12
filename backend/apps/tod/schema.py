@@ -49,9 +49,6 @@ class Mutation:
         request = info.context["request"]
         user = request.user
 
-        if not user.is_authenticated:
-            raise Exception("You must be logged in to create a lobby.")
-
         lobby = Lobby.objects.create(
             name=name,
             creator=user,

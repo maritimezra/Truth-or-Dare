@@ -1,3 +1,4 @@
+import jwt
 import strawberry
 from typing import List, Optional
 from strawberry_django.optimizer import DjangoOptimizerExtension
@@ -7,7 +8,7 @@ from strawberry_jwt_auth.extension import JWTExtension
 from strawberry_jwt_auth.decorator import login_required
 
 from .models import User
-from .types import UserType
+from .types import LoginResponse, UserType
 
 
 @strawberry.type
@@ -40,17 +41,35 @@ class Mutation:
         )
         return user
 
+    # @strawberry.mutation
+    # def login(self, info, email: str, password: str) -> bool:
+    #     user = User.objects.get(email=email)
+
+    #     if user.check_password(password):
+    #         setattr(info.context, "userID", user.id)
+    #         setattr(info.context.request, "issueNewTokens", True)
+    #         setattr(info.context.request, "clientID", user.id)
+    #         return True
+    #     else:
+    #         return False
+
     @strawberry.mutation
-    def login(self, info, email: str, password: str) -> bool:
+    def login(self, info, email: str, password: str) -> LoginResponse:
         user = User.objects.get(email=email)
 
         if user.check_password(password):
-            setattr(info.context, "userID", user.id)
-            setattr(info.context.request, "issueNewTokens", True)
-            setattr(info.context.request, "clientID", user.id)
-            return True
+            # Generate a JWT token with user information
+            token_payload = {
+                "user_id": user.id,
+                "email": user.email,
+            }  # Customize the payload as needed
+            token = jwt.encode(
+                token_payload, "210498", algorithm="HS256"
+            )  # Replace "your_secret_key" with your actual secret key
+            return LoginResponse(success=True, token=token)
         else:
-            return False
+            # Return a LoginResult instance with success=False and no token
+            return LoginResponse(success=False, token=None)
 
     @strawberry.mutation
     def logout(self, info) -> bool:

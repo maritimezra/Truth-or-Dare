@@ -4,7 +4,10 @@ import { Link, useNavigate } from 'react-router-dom';
 
 const LOGIN_USER = gql`
   mutation Login($email: String!, $password: String!) {
-    login(email: $email, password: $password)
+    login(email: $email, password: $password){
+      success
+      token
+    }
   }
 `;
 
@@ -23,7 +26,8 @@ const Login = () => {
       const { data } = await loginUser({ variables: { email, password } });
       if (data && data.login) {
         console.log('Login successful');
-        navigate('/');
+        localStorage.setItem('token', data.login.token);
+        navigate('/create-lobby');
       } else {
         setError('Invalid email or password');
       }

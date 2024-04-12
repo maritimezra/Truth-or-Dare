@@ -1,3 +1,4 @@
+import strawberry
 import strawberry_django
 from strawberry import auto
 
@@ -14,3 +15,9 @@ class UserType:
     is_staff: bool
     is_active: bool
     date_joined: str
+
+
+@strawberry.type
+class LoginResponse:
+    success: bool
+    token: str
