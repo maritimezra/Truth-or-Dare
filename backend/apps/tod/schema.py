@@ -15,8 +15,20 @@ class Query:
         return lobby.creator
 
     @strawberry.field
-    def get_lobbies(self) -> List[LobbyType]:
-        return list(Lobby.objects.all())
+    def get_lobbies(self, info) -> List[LobbyType]:
+        request = info.context["request"]
+        user = request.user
+
+        # Assuming Lobby model exists with appropriate fields
+        user_lobbies = Lobby.objects.filter(creator=user)
+
+        # Convert user_lobbies to a list of Lobby objects
+        lobbies = [
+            Lobby(name=lobby.name, level=lobby.level, category=lobby.category)
+            for lobby in user_lobbies
+        ]
+
+        return lobbies
 
     @strawberry.field
     def get_lobby(self, lobby_id: int) -> LobbyType:
