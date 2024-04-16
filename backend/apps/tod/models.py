@@ -18,8 +18,16 @@ class Category(models.TextChoices):
     Sports = "P"
 
 
+class Player(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+
 class Lobby(models.Model):
     creator = models.CharField(max_length=100)
+    player = models.ManyToManyField(Player, related_name="lobbies", blank=True)
     name = models.CharField(max_length=256)
     level = models.CharField(max_length=2, choices=Level, blank=True)
     category = models.CharField(max_length=1, choices=Category, blank=True)
@@ -39,7 +47,7 @@ class Lobby(models.Model):
         else:
             raise Exception("Player not found in the lobby.")
 
-    def create_lineup(self):
+    def lineup(self):
         players = Player.objects.filter(lobby=self)
         player_names = [player.name for player in players]
         random.shuffle(player_names)
@@ -47,11 +55,3 @@ class Lobby(models.Model):
 
     def get_players(self):
         return Player.objects.filter(lobby=self)
-
-
-class Player(models.Model):
-    name = models.CharField(max_length=100)
-    lobby = models.ForeignKey(Lobby, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.name

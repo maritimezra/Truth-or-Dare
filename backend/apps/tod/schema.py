@@ -37,7 +37,7 @@ class Query:
     @strawberry.field
     def get_players(self, lobby_id: int) -> List[PlayerType]:
         lobby = Lobby.objects.get(id=lobby_id)
-        return list(lobby.player_set.all())
+        return list(lobby.player.all())
 
     @strawberry.field
     def lineup(self, lobby_id: int) -> List[str]:

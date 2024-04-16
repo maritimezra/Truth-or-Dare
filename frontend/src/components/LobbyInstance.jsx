@@ -19,6 +19,10 @@ const GET_LOBBY = gql`
       level
       category
       name
+      players {
+        id
+        name
+      }
     }
   }
 `;
@@ -64,7 +68,7 @@ const LobbyInstance = () => {
       <button onClick={handleOpenModal}>Add Players</button>
       <Popup open={isModalOpen} closeOnDocumentClick={false}>
         <div>
-          <h2>Add Players</h2>
+          <h2>Players</h2>
           <input
             type="text"
             placeholder="Player Name"
@@ -72,7 +76,12 @@ const LobbyInstance = () => {
             onChange={(e) => setPlayerName(e.target.value)}
           />
           <button onClick={handleAddPlayer}>Add Player</button>
-          <button onClick={handleCloseModal}>Close</button>
+          <ul>
+            {lobby.players.map((player) => (
+              <li key={player.id}>{player.name}</li>
+            ))}
+          </ul>
+          <button onClick={handleCloseModal}>Done</button>
         </div>
       </Popup>
     </div>

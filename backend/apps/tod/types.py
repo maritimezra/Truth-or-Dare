@@ -5,6 +5,12 @@ from . import models
 from apps.accounts.types import UserType
 
 
+@strawberry_django.type(models.Player)
+class PlayerType:
+    id: auto
+    name: str
+
+
 @strawberry_django.type(models.Lobby)
 class LobbyType:
     id: auto
@@ -13,10 +19,4 @@ class LobbyType:
     level: str
     category: str
     created_at: str
-
-
-@strawberry_django.type(models.Player)
-class PlayerType:
-    id: auto
-    name: str
-    lobby: LobbyType
+    player = PlayerType
