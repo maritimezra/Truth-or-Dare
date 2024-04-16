@@ -40,7 +40,7 @@ class Query:
         return list(lobby.player_set.all())
 
     @strawberry.field
-    def create_lineup(self, lobby_id: int) -> List[str]:
+    def lineup(self, lobby_id: int) -> List[str]:
         lobby = Lobby.objects.get(id=lobby_id)
         players = Player.objects.filter(lobby=lobby)
         player_names = [player.name for player in players]
