@@ -14,8 +14,8 @@ const CREATE_LOBBY = gql`
   }
 `;
 
-const levels = ["ML", "MD", "WD"];
-const categories = ["R", "T", "W", "F", "S", "P"];
+const levels = ["Mild", "Moderate", "Wild"];
+const categories = ["Romance", "Travel", "Work", "Food", "Sex", "Parenting"];
 
 const CreateLobby = () => {
   const [name, setName] = useState('');
@@ -25,12 +25,10 @@ const CreateLobby = () => {
 
   const [createLobby] = useMutation(CREATE_LOBBY);
 
-  // Use useEffect to retrieve the authentication token from local storage
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
-      // Handle the case where the token is not available
-      console.error('User is not authenticated'); // Log an error for debugging
+      console.error('User is not authenticated'); 
     }
   }, []);
 
@@ -52,10 +50,9 @@ const CreateLobby = () => {
         })
         .catch(error => {
           console.error('Error creating lobby:', error);
-          // Handle error or show error message
         });
     } else {
-      console.error('User is not authenticated'); // Log an error for debugging
+      console.error('User is not authenticated'); 
     }
   };
 
