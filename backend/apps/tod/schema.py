@@ -78,10 +78,17 @@ class Mutation:
         except Lobby.DoesNotExist:
             return f"Lobby with ID {lobby_id} does not exist."
 
+    # @strawberry.mutation
+    # def add_player(self, lobby_id: int, player_name: str) -> PlayerType:
+    #     lobby = Lobby.objects.get(id=lobby_id)
+    #     player = Player.objects.create(name=player_name, lobby=lobby)
+    #     return player
+
     @strawberry.mutation
     def add_player(self, lobby_id: int, player_name: str) -> PlayerType:
         lobby = Lobby.objects.get(id=lobby_id)
-        player = Player.objects.create(name=player_name, lobby=lobby)
+        player = Player.objects.create(name=player_name)
+        lobby.player.add(player)
         return player
 
     @strawberry.mutation
