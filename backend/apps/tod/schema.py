@@ -10,21 +10,30 @@ from .models import *
 @strawberry.type
 class Query:
     @strawberry.field
-    def get_creator(self, lobby_id: int) -> UserType:
+    def get_creator(self, info, lobby_id: int) -> UserType:
         lobby = Lobby.objects.get(id=lobby_id)
+        request = info.context["request"]
+        if request.user == lobby.creator:
+            return request.user
+        else:
+            pass
         return lobby.creator
+        # return lobby.creator.username
 
     @strawberry.field
     def get_lobbies(self, info) -> List[LobbyType]:
         request = info.context["request"]
         user = request.user
-
-        # Assuming Lobby model exists with appropriate fields
         user_lobbies = Lobby.objects.filter(creator=user)
 
-        # Convert user_lobbies to a list of Lobby objects
         lobbies = [
-            Lobby(name=lobby.name, level=lobby.level, category=lobby.category)
+            Lobby(
+                id=lobby.id,
+                name=lobby.name,
+                level=lobby.level,
+                category=lobby.category,
+                created_at=lobby.created_at,
+            )
             for lobby in user_lobbies
         ]
 
@@ -64,6 +73,7 @@ class Mutation:
         lobby = Lobby.objects.create(
             name=name,
             creator=user,
+            # creator=user.username,
             level=level,
             category=category,
         )
@@ -77,12 +87,6 @@ class Mutation:
             return f"Lobby with ID {lobby_id} deleted successfully."
         except Lobby.DoesNotExist:
             return f"Lobby with ID {lobby_id} does not exist."
-
-    # @strawberry.mutation
-    # def add_player(self, lobby_id: int, player_name: str) -> PlayerType:
-    #     lobby = Lobby.objects.get(id=lobby_id)
-    #     player = Player.objects.create(name=player_name, lobby=lobby)
-    #     return player
 
     @strawberry.mutation
     def add_player(self, lobby_id: int, player_name: str) -> PlayerType:

@@ -15,6 +15,7 @@ class PlayerType:
 class LobbyType:
     id: auto
     creator: str
+    # creator: UserType
     name: str
     level: str
     category: str
