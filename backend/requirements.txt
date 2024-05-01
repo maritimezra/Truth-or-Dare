@@ -1,7 +1,9 @@
 asgiref==3.7.2
 Django==5.0.3
+django-cors-headers==4.3.1
 graphql-core==3.2.3
 phonenumbers==8.13.32
+pillow==10.3.0
 PyJWT==2.8.0
 python-dateutil==2.9.0.post0
 six==1.16.0
