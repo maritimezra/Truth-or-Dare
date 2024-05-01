@@ -27,6 +27,7 @@ class Player(models.Model):
 
 class Lobby(models.Model):
     creator = models.CharField(max_length=100)
+    # creator = models.ForeignKey(User, on_delete=models.CASCADE)
     player = models.ManyToManyField(Player, related_name="lobbies", blank=True)
     name = models.CharField(max_length=256)
     level = models.CharField(max_length=2, choices=Level, blank=True)

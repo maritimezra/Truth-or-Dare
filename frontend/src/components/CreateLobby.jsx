@@ -10,6 +10,7 @@ const CREATE_LOBBY = gql`
       id
       level
       category
+      creator
     }
   }
 `;
