@@ -66,6 +66,7 @@ class Mutation:
         name: str,
         level: str,
         category: str,
+        creator: str,
     ) -> LobbyType:
         request = info.context["request"]
         user = request.user
@@ -94,6 +95,14 @@ class Mutation:
         player = Player.objects.create(name=player_name)
         lobby.player.add(player)
         return player
+
+    # @strawberry.mutation
+    # def add_player(self, info, name: str) -> PlayerType:
+    #     request = info.context["request"]
+    #     lobby = request.lobby
+    #     player = Player.objects.create(name=name)
+    #     lobby.player.add(player)
+    #     return player
 
     @strawberry.mutation
     def remove_player(self, lobby_id: int, player_name: str) -> str:

@@ -10,7 +10,9 @@ const CREATE_LOBBY = gql`
       id
       level
       category
-      creator
+      creator{
+        username
+      }
     }
   }
 `;
@@ -47,7 +49,7 @@ const CreateLobby = () => {
         .then(result => {
           console.log('Lobby created:', result.data.createLobby);
           const lobbyId = result.data.createLobby.id;
-          navigate(`/lobbies/${lobbyId}`);
+          // navigate(`/lobbies/${lobbyId}`);
         })
         .catch(error => {
           console.error('Error creating lobby:', error);

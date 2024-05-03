@@ -1,11 +1,11 @@
-import React from 'react';
+// import React from 'react';
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; 
 import Home from './components/Home';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import CreateLobby from './components/CreateLobby';
-import LobbyInstance from './components/LobbyInstance';
+// import LobbyInstance from './components/LobbyInstance';
 
 
 const client = new ApolloClient({
@@ -22,7 +22,7 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/create-lobby" element={<CreateLobby />} />
-            <Route path="/lobbies/:lobbyId" element={<LobbyInstance />} />
+            {/* <Route path="/lobbies/:lobbyId" element={<LobbyInstance />} /> */}
           </Routes>
         </div>
       </Router>
