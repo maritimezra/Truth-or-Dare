@@ -14,8 +14,7 @@ class PlayerType:
 @strawberry_django.type(models.Lobby)
 class LobbyType:
     id: auto
-    creator: str
-    # creator: UserType
+    creator: UserType
     name: str
     level: str
     category: str

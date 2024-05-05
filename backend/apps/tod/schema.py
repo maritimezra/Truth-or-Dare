@@ -59,6 +59,36 @@ class Query:
 
 @strawberry.type
 class Mutation:
+    # @strawberry.mutation
+    # def create_lobby(
+    #     self,
+    #     info,
+    #     name: str,
+    #     level: str,
+    #     category: str,
+    # ) -> LobbyType:
+    #     request = info.context["request"]
+    #     # user = request.user
+    #     user = UserType(
+    #         id=request.user.id,
+    #         username=request.user.username,
+    #         avatar=request.user.avatar,
+    #         email=request.user.email,
+    #         gender=request.user.gender,
+    #         is_staff=request.user.is_staff,
+    #         is_active=request.user.is_active,
+    #         date_joined=str(request.user.date_joined),
+    #     )
+
+    #     lobby = Lobby.objects.create(
+    #         name=name,
+    #         creator=user,
+    #         # creator=user.username,
+    #         level=level,
+    #         category=category,
+    #     )
+    #     return lobby
+
     @strawberry.mutation
     def create_lobby(
         self,
@@ -66,19 +96,30 @@ class Mutation:
         name: str,
         level: str,
         category: str,
-        creator: str,
     ) -> LobbyType:
         request = info.context["request"]
         user = request.user
 
-        lobby = Lobby.objects.create(
-            name=name,
-            creator=user,
-            # creator=user.username,
-            level=level,
-            category=category,
-        )
-        return lobby
+        if request.user.is_authenticated:
+            user_type = UserType(
+                id=user.id,
+                username=user.username,
+                avatar=user.avatar,
+                email=user.email,
+                gender=user.gender,
+                is_staff=user.is_staff,
+                is_active=user.is_active,
+                date_joined=str(user.date_joined),
+            )
+            lobby = Lobby.objects.create(
+                name=name,
+                creator=user_type,
+                level=level,
+                category=category,
+            )
+            return lobby
+        else:
+            raise ValueError("User is not authenticated.")
 
     @strawberry.mutation
     def delete_lobby(self, lobby_id: int) -> str:
