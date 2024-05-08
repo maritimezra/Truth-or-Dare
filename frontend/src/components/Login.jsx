@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useMutation, gql } from '@apollo/client';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -39,6 +39,27 @@ const Login = () => {
     }
   };
 
+  // const [loginUser] = useMutation(LOGIN_USER, {
+  //   onCompleted: (data) => {
+  //     if (data.login.success) {
+  //       localStorage.setItem('token', data.login.token);
+  //       navigate('/create-lobby');
+  //     } else {
+  //       setError('Invalid email or password');
+  //     }
+  //   },
+  //   onError: (error) => {
+  //     console.error('Error logging in:', error);
+  //     setError('An error occurred during login');
+  //   },
+  // });
+
+  // const handleLogin = async () => {
+  //   setLoading(true);
+  //   await loginUser({ variables: { email, password } });
+  //   setLoading(false);
+  // };
+
   return (
     <div>
       <h2>Login</h2>
@@ -57,7 +78,7 @@ const Login = () => {
       <button onClick={handleLogin} disabled={loading}>
         {loading ? 'Logging in...' : 'Log In'}
       </button>
-      <p>Don't have an account? <Link to="/signup">Create one</Link></p>
+      <p>Dont have an account? <Link to="/signup">Create one</Link></p>
       {error && <p style={{ color: 'red' }}>{error}</p>}
     </div>
   );

@@ -1,5 +1,6 @@
 import strawberry_django
 from strawberry import auto
+import strawberry
 
 from . import models
 from apps.accounts.types import UserType
@@ -20,3 +21,10 @@ class LobbyType:
     category: str
     created_at: str
     player = PlayerType
+
+@strawberry.input
+class InputUserType:
+    id: str
+    username: str
+    email: str
+    avatar: str = None

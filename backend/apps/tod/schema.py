@@ -3,7 +3,7 @@ from typing import List
 from strawberry_django.optimizer import DjangoOptimizerExtension
 
 from apps.accounts.types import UserType
-from .types import LobbyType, PlayerType
+from .types import LobbyType, PlayerType, InputUserType
 from .models import *
 
 
@@ -55,6 +55,32 @@ class Query:
         player_names = [player.name for player in players]
         random.shuffle(player_names)
         return player_names
+    
+    @strawberry.field
+    def me(self, info) -> UserType:
+        request = info.context["request"]
+        if request.user.is_authenticated:
+            return UserType(
+                id=request.user.id,
+                username=request.user.username,
+                email=request.user.email,
+                avatar=request.user.avatar,
+                gender=request.user.gender,
+                is_staff=request.user.is_staff,
+                is_active=request.user.is_active,
+                date_joined=str(request.user.date_joined),
+            )
+        else:
+            return UserType(
+                id=None,
+                username=None,
+                email=None,
+                avatar=None,
+                gender=None,
+                is_staff=False,
+                is_active=False,
+                date_joined=None,
+            )
 
 
 @strawberry.type
@@ -83,7 +109,6 @@ class Mutation:
     #     lobby = Lobby.objects.create(
     #         name=name,
     #         creator=user,
-    #         # creator=user.username,
     #         level=level,
     #         category=category,
     #     )
@@ -98,28 +123,30 @@ class Mutation:
         category: str,
     ) -> LobbyType:
         request = info.context["request"]
-        user = request.user
 
-        if request.user.is_authenticated:
-            user_type = UserType(
-                id=user.id,
-                username=user.username,
-                avatar=user.avatar,
-                email=user.email,
-                gender=user.gender,
-                is_staff=user.is_staff,
-                is_active=user.is_active,
-                date_joined=str(user.date_joined),
-            )
-            lobby = Lobby.objects.create(
-                name=name,
-                creator=user_type,
-                level=level,
-                category=category,
-            )
-            return lobby
-        else:
+        # Check if the user is authenticated
+        if not request.user.is_authenticated:
             raise ValueError("User is not authenticated.")
+
+        user = UserType(
+            id=request.user.id,
+            username=request.user.username,
+            avatar=request.user.avatar,
+            email=request.user.email,
+            gender=request.user.gender,
+            is_staff=request.user.is_staff,
+            is_active=request.user.is_active,
+            date_joined=str(request.user.date_joined),
+        )
+
+        lobby = Lobby.objects.create(
+            name=name,
+            creator=user,
+            level=level,
+            category=category,
+        )
+        return lobby
+
 
     @strawberry.mutation
     def delete_lobby(self, lobby_id: int) -> str:
@@ -137,13 +164,6 @@ class Mutation:
         lobby.player.add(player)
         return player
 
-    # @strawberry.mutation
-    # def add_player(self, info, name: str) -> PlayerType:
-    #     request = info.context["request"]
-    #     lobby = request.lobby
-    #     player = Player.objects.create(name=name)
-    #     lobby.player.add(player)
-    #     return player
 
     @strawberry.mutation
     def remove_player(self, lobby_id: int, player_name: str) -> str:

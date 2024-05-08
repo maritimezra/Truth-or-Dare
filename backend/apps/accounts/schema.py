@@ -10,6 +10,9 @@ from strawberry_jwt_auth.decorator import login_required
 from .models import User
 from .types import LoginResponse, UserType
 
+from django.conf import settings
+from strawberry.types import Info
+
 
 @strawberry.type
 class Query:
@@ -22,6 +25,7 @@ class Query:
     @login_required
     def me(self, info) -> UserType:
         return info.context.request.user
+
 
 
 @strawberry.type
@@ -53,6 +57,23 @@ class Mutation:
     #     else:
     #         return False
 
+    # @strawberry.mutation
+    # def login(self, info, email: str, password: str) -> LoginResponse:
+    #     user = User.objects.get(email=email)
+
+    #     if user.check_password(password):
+    #         # Generate a JWT token with user information
+    #         token_payload = {
+    #             "user_id": user.id,
+    #             "email": user.email,
+    #         }  # Customize the payload as needed
+    #         token = jwt.encode(
+    #             token_payload, "210498", algorithm="HS256"
+    #         )  # Replace "your_secret_key" with your actual secret key
+    #         return LoginResponse(success=True, token=token)
+    #     else:
+    #         # Return a LoginResult instance with success=False and no token
+    #         return LoginResponse(success=False, token=None)
     @strawberry.mutation
     def login(self, info, email: str, password: str) -> LoginResponse:
         user = User.objects.get(email=email)
@@ -60,16 +81,16 @@ class Mutation:
         if user.check_password(password):
             # Generate a JWT token with user information
             token_payload = {
-                "user_id": user.id,
+                "id": user.id,
                 "email": user.email,
             }  # Customize the payload as needed
             token = jwt.encode(
                 token_payload, "210498", algorithm="HS256"
             )  # Replace "your_secret_key" with your actual secret key
-            return LoginResponse(success=True, token=token)
+            return LoginResponse( success=True, token=token, is_authenticated=True)
         else:
-            # Return a LoginResult instance with success=False and no token
-            return LoginResponse(success=False, token=None)
+            # Return a LoginResult instance with success=False, no token, and is_authenticated=False
+            return LoginResponse(success=False, token=None, is_authenticated=False)     
 
     @strawberry.mutation
     def logout(self, info) -> bool:

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useMutation, gql } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,6 +12,7 @@ const CREATE_LOBBY = gql`
       category
       creator{
         username
+        avatar
       }
     }
   }
@@ -35,11 +36,22 @@ const CreateLobby = () => {
     }
   }, []);
 
-  const handleCreateLobby = () => {
+  const handleCreateLobby = async () => {
     const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
+    const username = localStorage.getItem('username');
+    const email = localStorage.getItem('email');
+    const avatar = localStorage.getItem('avatar');
     if (token) {
       createLobby({
-        variables: { name, level, category },
+        variables: { name, 
+          level, 
+          category,
+          id: userId,
+          username,
+          email,
+          avatar, 
+        },
         context: {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -49,13 +61,14 @@ const CreateLobby = () => {
         .then(result => {
           console.log('Lobby created:', result.data.createLobby);
           const lobbyId = result.data.createLobby.id;
-          // navigate(`/lobbies/${lobbyId}`);
+          navigate(`/lobbies/${lobbyId}`);
         })
         .catch(error => {
           console.error('Error creating lobby:', error);
         });
     } else {
-      console.error('User is not authenticated'); 
+      console.error('User is not authenticated');
+      navigate('/login'); 
     }
   };
 
@@ -90,3 +103,4 @@ const CreateLobby = () => {
 };
 
 export default CreateLobby;
+
