@@ -6,6 +6,9 @@ from apps.accounts.types import UserType
 from .types import LobbyType, PlayerType, InputUserType
 from .models import *
 
+# from graphql import GraphQLError
+# from django.utils.translation import gettext_lazy as _
+
 
 @strawberry.type
 class Query:
@@ -85,35 +88,6 @@ class Query:
 
 @strawberry.type
 class Mutation:
-    # @strawberry.mutation
-    # def create_lobby(
-    #     self,
-    #     info,
-    #     name: str,
-    #     level: str,
-    #     category: str,
-    # ) -> LobbyType:
-    #     request = info.context["request"]
-    #     # user = request.user
-    #     user = UserType(
-    #         id=request.user.id,
-    #         username=request.user.username,
-    #         avatar=request.user.avatar,
-    #         email=request.user.email,
-    #         gender=request.user.gender,
-    #         is_staff=request.user.is_staff,
-    #         is_active=request.user.is_active,
-    #         date_joined=str(request.user.date_joined),
-    #     )
-
-    #     lobby = Lobby.objects.create(
-    #         name=name,
-    #         creator=user,
-    #         level=level,
-    #         category=category,
-    #     )
-    #     return lobby
-
     @strawberry.mutation
     def create_lobby(
         self,
@@ -123,15 +97,11 @@ class Mutation:
         category: str,
     ) -> LobbyType:
         request = info.context["request"]
-
-        # Check if the user is authenticated
-        if not request.user.is_authenticated:
-            raise ValueError("User is not authenticated.")
-
+        # user = request.user
         user = UserType(
             id=request.user.id,
             username=request.user.username,
-            avatar=request.user.avatar,
+            # avatar=request.user.avatar,
             email=request.user.email,
             gender=request.user.gender,
             is_staff=request.user.is_staff,
@@ -146,6 +116,23 @@ class Mutation:
             category=category,
         )
         return lobby
+
+    # @strawberry.mutation
+    # def create_lobby(self, info, name: str, level: str, category: str) -> LobbyType:
+    #     user = info.context.request.user
+
+    #     # Check if user is authenticated
+    #     if not user.is_authenticated:
+    #         raise GraphQLError(_("User is not authenticated."))
+
+    #     # Proceed with creating the lobby
+    #     lobby = Lobby.objects.create(
+    #         name=name,
+    #         creator=user,
+    #         level=level,
+    #         category=category,
+    #     )
+    #     return lobby
 
 
     @strawberry.mutation

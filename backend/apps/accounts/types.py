@@ -21,4 +21,3 @@ class UserType:
 class LoginResponse:
     success: bool
     token: str
-    # is_authenticated: bool

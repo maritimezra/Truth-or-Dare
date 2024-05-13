@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+// import { useState, useEffect } from 'react';
+import { useState} from 'react';
 import { useMutation, gql } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,8 +12,9 @@ const CREATE_LOBBY = gql`
       level
       category
       creator{
+        id
+        email
         username
-        avatar
       }
     }
   }
@@ -29,54 +31,29 @@ const CreateLobby = () => {
 
   const [createLobby] = useMutation(CREATE_LOBBY);
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      console.error('User is not authenticated'); 
-    }
-  }, []);
-  // useEffect(() => {
-  //   const isAuthenticated = localStorage.getItem('isAuthenticated');
-  //   if (!isAuthenticated || isAuthenticated !== 'true') {
-  //     console.error('User is not authenticated');
-  //     navigate('/login');
-  //   }
-  // }, [navigate]);
-  
-
   const handleCreateLobby = async () => {
     const token = localStorage.getItem('token');
-    const userId = localStorage.getItem('userId');
-    const username = localStorage.getItem('username');
-    const email = localStorage.getItem('email');
-    const avatar = localStorage.getItem('avatar');
-    if (token) {
-      createLobby({
-        variables: { name, 
-          level, 
-          category,
-          id: userId,
-          username,
-          email,
-          avatar, 
-        },
+    console.log('Token:', token);
+    if (!token) {
+      console.error('User is not authenticated');
+      navigate('/login');
+      return;
+    }
+
+    try {
+      const { data } = await createLobby({
+        variables: { name, level, category },
         context: {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         },
-      })
-        .then(result => {
-          console.log('Lobby created:', result.data.createLobby);
-          const lobbyId = result.data.createLobby.id;
-          navigate(`/lobbies/${lobbyId}`);
-        })
-        .catch(error => {
-          console.error('Error creating lobby:', error);
-        });
-    } else {
-      console.error('User is not authenticated');
-      navigate('/login'); 
+      });
+      console.log('Lobby created:', data.createLobby);
+      const lobbyId = data.createLobby.id;
+      navigate(`/lobbies/${lobbyId}`);
+    } catch (error) {
+      console.error('Error creating lobby:', error);
     }
   };
 

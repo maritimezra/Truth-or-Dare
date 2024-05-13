@@ -2,6 +2,9 @@ import jwt
 import strawberry
 from typing import List, Optional
 from strawberry_django.optimizer import DjangoOptimizerExtension
+from django.contrib.auth import authenticate
+from django.conf import settings
+
 
 from strawberry_jwt_auth.extension import JWTExtension
 
@@ -46,25 +49,46 @@ class Mutation:
         return user
 
 
+    # @strawberry.mutation
+    # def login(self, info, email: str, password: str) -> LoginResponse:
+    #     user = User.objects.get(email=email)
+
+    #     if user.check_password(password):
+    #         setattr(info.context.request, "user", user)
+
+    #         # Generate a JWT token with user information
+    #         token_payload = {
+    #             "user_id": user.id,
+    #             "email": user.email,
+
+    #         }  # Customize the payload as needed
+    #         token = jwt.encode(
+    #             token_payload, "210498", algorithm="HS256"
+    #         )  # Replace "your_secret_key" with your actual secret key
+    #         return LoginResponse( success=True, token=token)
+    #     else:
+    #         # Return a LoginResult instance with success=False, no token, and is_authenticated=False
+    #         return LoginResponse(success=False, token=None)
+
     @strawberry.mutation
     def login(self, info, email: str, password: str) -> LoginResponse:
-        user = User.objects.get(email=email)
-
-        if user.check_password(password):
+        # Authenticate user
+        user = authenticate(email=email, password=password)
+        
+        if user is not None:
             setattr(info.context.request, "user", user)
 
             # Generate a JWT token with user information
             token_payload = {
                 "user_id": user.id,
                 "email": user.email,
-            }  # Customize the payload as needed
-            token = jwt.encode(
-                token_payload, "210498", algorithm="HS256"
-            )  # Replace "your_secret_key" with your actual secret key
-            return LoginResponse( success=True, token=token)
+            }
+            token = jwt.encode(token_payload, settings.SECRET_KEY, algorithm="HS256")
+
+            return LoginResponse(success=True, token=token)
         else:
-            # Return a LoginResult instance with success=False, no token, and is_authenticated=False
-            return LoginResponse(success=False, token=None)     
+            # Return error response if authentication fails
+            return LoginResponse(success=False, token=None)   
 
     @strawberry.mutation
     def logout(self, info) -> bool:

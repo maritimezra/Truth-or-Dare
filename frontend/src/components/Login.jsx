@@ -24,15 +24,10 @@ const Login = () => {
     try {
       setLoading(true);
       const { data } = await loginUser({ variables: { email, password } });
-      // if (data && data.login.success && data.login.user) {
-        if (data && data.login) {
+      if (data && data.login && data.login.success) {
         console.log('Login successful');
+        console.log('Token:', data.login.token)
         localStorage.setItem('token', data.login.token);
-        // localStorage.setItem('userId', data.login.user.id);
-        // localStorage.setItem('username', data.login.user.username);
-        // localStorage.setItem('email', data.login.user.email);
-        // localStorage.setItem('avatar', data.login.user.avatar);
-        // localStorage.setItem('isAuthenticated', 'true');
         navigate('/create-lobby');
       } else {
         setError('Invalid email or password');
