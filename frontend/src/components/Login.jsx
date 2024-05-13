@@ -24,9 +24,15 @@ const Login = () => {
     try {
       setLoading(true);
       const { data } = await loginUser({ variables: { email, password } });
-      if (data && data.login) {
+      // if (data && data.login.success && data.login.user) {
+        if (data && data.login) {
         console.log('Login successful');
         localStorage.setItem('token', data.login.token);
+        // localStorage.setItem('userId', data.login.user.id);
+        // localStorage.setItem('username', data.login.user.username);
+        // localStorage.setItem('email', data.login.user.email);
+        // localStorage.setItem('avatar', data.login.user.avatar);
+        // localStorage.setItem('isAuthenticated', 'true');
         navigate('/create-lobby');
       } else {
         setError('Invalid email or password');
@@ -38,27 +44,6 @@ const Login = () => {
       setLoading(false);
     }
   };
-
-  // const [loginUser] = useMutation(LOGIN_USER, {
-  //   onCompleted: (data) => {
-  //     if (data.login.success) {
-  //       localStorage.setItem('token', data.login.token);
-  //       navigate('/create-lobby');
-  //     } else {
-  //       setError('Invalid email or password');
-  //     }
-  //   },
-  //   onError: (error) => {
-  //     console.error('Error logging in:', error);
-  //     setError('An error occurred during login');
-  //   },
-  // });
-
-  // const handleLogin = async () => {
-  //   setLoading(true);
-  //   await loginUser({ variables: { email, password } });
-  //   setLoading(false);
-  // };
 
   return (
     <div>

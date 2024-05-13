@@ -35,6 +35,14 @@ const CreateLobby = () => {
       console.error('User is not authenticated'); 
     }
   }, []);
+  // useEffect(() => {
+  //   const isAuthenticated = localStorage.getItem('isAuthenticated');
+  //   if (!isAuthenticated || isAuthenticated !== 'true') {
+  //     console.error('User is not authenticated');
+  //     navigate('/login');
+  //   }
+  // }, [navigate]);
+  
 
   const handleCreateLobby = async () => {
     const token = localStorage.getItem('token');
