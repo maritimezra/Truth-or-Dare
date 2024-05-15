@@ -21,10 +21,3 @@ class LobbyType:
     category: str
     created_at: str
     player = PlayerType
-
-@strawberry.input
-class InputUserType:
-    id: str
-    username: str
-    email: str
-    avatar: str = None

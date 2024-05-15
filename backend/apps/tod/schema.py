@@ -3,7 +3,7 @@ from typing import List
 from strawberry_django.optimizer import DjangoOptimizerExtension
 
 from apps.accounts.types import UserType
-from .types import LobbyType, PlayerType, InputUserType
+from .types import LobbyType, PlayerType
 from .models import *
 
 # from graphql import GraphQLError
@@ -58,7 +58,7 @@ class Query:
         player_names = [player.name for player in players]
         random.shuffle(player_names)
         return player_names
-    
+
     @strawberry.field
     def me(self, info) -> UserType:
         request = info.context["request"]
@@ -97,17 +97,11 @@ class Mutation:
         category: str,
     ) -> LobbyType:
         request = info.context["request"]
-        # user = request.user
-        user = UserType(
-            id=request.user.id,
-            username=request.user.username,
-            # avatar=request.user.avatar,
-            email=request.user.email,
-            gender=request.user.gender,
-            is_staff=request.user.is_staff,
-            is_active=request.user.is_active,
-            date_joined=str(request.user.date_joined),
-        )
+
+        if not request.user.is_authenticated:
+            raise Exception("Authentication required to create a lobby.")
+
+        user = request.user
 
         lobby = Lobby.objects.create(
             name=name,
@@ -116,24 +110,6 @@ class Mutation:
             category=category,
         )
         return lobby
-
-    # @strawberry.mutation
-    # def create_lobby(self, info, name: str, level: str, category: str) -> LobbyType:
-    #     user = info.context.request.user
-
-    #     # Check if user is authenticated
-    #     if not user.is_authenticated:
-    #         raise GraphQLError(_("User is not authenticated."))
-
-    #     # Proceed with creating the lobby
-    #     lobby = Lobby.objects.create(
-    #         name=name,
-    #         creator=user,
-    #         level=level,
-    #         category=category,
-    #     )
-    #     return lobby
-
 
     @strawberry.mutation
     def delete_lobby(self, lobby_id: int) -> str:
@@ -150,7 +126,6 @@ class Mutation:
         player = Player.objects.create(name=player_name)
         lobby.player.add(player)
         return player
-
 
     @strawberry.mutation
     def remove_player(self, lobby_id: int, player_name: str) -> str:
