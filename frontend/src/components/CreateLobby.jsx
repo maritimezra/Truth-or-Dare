@@ -34,18 +34,18 @@ const CreateLobby = () => {
   const handleCreateLobby = async () => {
     const token = localStorage.getItem('token');
     console.log('Token:', token);
-    if (!token) {
-      console.error('User is not authenticated');
-      navigate('/login');
-      return;
-    }
+    // if (!token) {
+    //   console.error('User is not authenticated');
+    //   navigate('/login');
+    //   return;
+    // }
 
     try {
       const { data } = await createLobby({
         variables: { name, level, category },
         context: {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: token ? `Bearer ${token}`: "",
           },
         },
       });
