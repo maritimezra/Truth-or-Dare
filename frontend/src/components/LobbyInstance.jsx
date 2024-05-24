@@ -23,22 +23,37 @@ const GET_LOBBY = gql`
   }
 `;
 
+const GET_PLAYERS = gql`
+  query GetPlayers($lobbyId: Int!) {
+    getPlayers(lobbyId: $lobbyId) {
+      id
+      name
+    }
+  }
+`;
+
 const LobbyInstance = () => {
   const { lobbyId } = useParams();
-  const { loading, error, data } = useQuery(GET_LOBBY, {
+  const { loading: loadingLobby, error: errorLobby, data: dataLobby } = useQuery(GET_LOBBY, {
+    variables: { lobbyId: parseInt(lobbyId) },
+  });
+
+  const { loading: loadingPlayers, error: errorPlayers, data: dataPlayers } = useQuery(GET_PLAYERS, {
     variables: { lobbyId: parseInt(lobbyId) },
   });
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [playerName, setPlayerName] = useState('');
   const [addPlayer] = useMutation(ADD_PLAYER, {
-    refetchQueries: [{ query: GET_LOBBY, variables: { lobbyId: parseInt(lobbyId) } }],
+    refetchQueries: [{ query: GET_PLAYERS, variables: { lobbyId: parseInt(lobbyId) } }],
   });
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  if (loadingLobby || loadingPlayers) return <p>Loading...</p>;
+  if (errorLobby) return <p>Error: {errorLobby.message}</p>;
+  if (errorPlayers) return <p>Error: {errorPlayers.message}</p>;
 
-  const lobby = data.getLobby;
+  const lobby = dataLobby.getLobby;
+  const players = dataPlayers.getPlayers;
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -64,7 +79,7 @@ const LobbyInstance = () => {
       <button onClick={handleOpenModal}>Add Players</button>
       <Popup open={isModalOpen} closeOnDocumentClick={false}>
         <div>
-          <h2>Players</h2>
+          <h2>Add Player</h2>
           <input
             type="text"
             placeholder="Player Name"
@@ -73,6 +88,14 @@ const LobbyInstance = () => {
           />
           <button onClick={handleAddPlayer}>Add Player</button>
           <button onClick={handleCloseModal}>Done</button>
+          <h3>Players</h3>
+          <ul>
+            {players.map((player) => (
+              <div key={player.id}>
+              {player.name}
+            </div>
+            ))}
+          </ul>
         </div>
       </Popup>
     </div>
