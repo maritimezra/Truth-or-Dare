@@ -1,5 +1,5 @@
 import strawberry, jwt
-from typing import List
+from typing import List, Optional
 from strawberry_django.optimizer import DjangoOptimizerExtension
 
 from apps.accounts.types import UserType
@@ -61,29 +61,34 @@ class Query:
 
     @strawberry.field
     def me(self, info) -> UserType:
-        request = info.context["request"]
-        if request.user.is_authenticated:
-            return UserType(
-                id=request.user.id,
-                username=request.user.username,
-                email=request.user.email,
-                avatar=request.user.avatar,
-                gender=request.user.gender,
-                is_staff=request.user.is_staff,
-                is_active=request.user.is_active,
-                date_joined=str(request.user.date_joined),
-            )
+        auth_header = info.context.request.headers.get("Authorization", "")
+        if auth_header.startswith("Bearer "):
+            token = auth_header.split(" ")[1]
         else:
-            return UserType(
-                id=None,
-                username=None,
-                email=None,
-                avatar=None,
-                gender=None,
-                is_staff=False,
-                is_active=False,
-                date_joined=None,
+            raise Exception("Invalid Authorization header format.")
+
+        try:
+            # Decode the JWT token to get the user information
+            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
+            user_id = payload["user_id"]
+            user = User.objects.get(id=user_id)
+
+            logger.info(f"Authenticated user: {user.username}, {user.email}")
+
+            user_instance = UserType(
+                id=user.id,
+                username=user.username,
+                email=user.email,
+                avatar=user.avatar,
+                gender=user.gender,
+                is_staff=user.is_staff,
+                is_active=user.is_active,
+                date_joined=str(user.date_joined),
             )
+
+            return user_instance
+        except (jwt.DecodeError, User.DoesNotExist):
+            raise Exception("User is not logged in")
 
 
 @strawberry.type
