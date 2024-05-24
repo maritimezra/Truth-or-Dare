@@ -34,6 +34,7 @@ class Query:
                 name=lobby.name,
                 level=lobby.level,
                 category=lobby.category,
+                creator=lobby.creator,
                 created_at=lobby.created_at,
             )
             for lobby in user_lobbies
