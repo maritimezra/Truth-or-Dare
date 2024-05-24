@@ -14,7 +14,7 @@ class Gender(models.TextChoices):
 
 class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=256, unique=True)
-    # avatar = models.ImageField(upload_to="avatars/", blank=True)
+    avatar = models.ImageField(upload_to="avatars/", blank=True)
     email = models.EmailField(_("email address"), unique=True)
     gender = models.CharField(max_length=1, choices=Gender, blank=True)
     # todo: add age object

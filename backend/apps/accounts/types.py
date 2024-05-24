@@ -1,6 +1,7 @@
 import strawberry
 import strawberry_django
 from strawberry import auto
+from typing import Optional
 
 from . import models
 
@@ -9,7 +10,7 @@ from . import models
 class UserType:
     id: auto
     username: str
-    avatar: str
+    avatar: Optional[str]
     email: str
     gender: str
     is_staff: bool

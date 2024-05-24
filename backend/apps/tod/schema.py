@@ -1,4 +1,4 @@
-import strawberry
+import strawberry, jwt
 from typing import List
 from strawberry_django.optimizer import DjangoOptimizerExtension
 
@@ -6,8 +6,7 @@ from apps.accounts.types import UserType
 from .types import LobbyType, PlayerType
 from .models import *
 
-# from graphql import GraphQLError
-# from django.utils.translation import gettext_lazy as _
+from django.conf import settings
 
 
 @strawberry.type
@@ -96,13 +95,21 @@ class Mutation:
         level: str,
         category: str,
     ) -> LobbyType:
-        request = info.context["request"]
+        auth_header = info.context.request.headers.get("Authorization", "")
+        if auth_header.startswith("Bearer "):
+            token = auth_header.split(" ")[1]
+        else:
+            raise Exception("Invalid Authorization header format.")
 
-        if not request.user.is_authenticated:
+        try:
+            # Decode the JWT token to get the user information
+            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
+            user_id = payload["user_id"]
+            user = User.objects.get(id=user_id)
+        except (jwt.DecodeError, User.DoesNotExist):
             raise Exception("Authentication required to create a lobby.")
 
-        user = request.user
-
+        # Create the new lobby
         lobby = Lobby.objects.create(
             name=name,
             creator=user,
