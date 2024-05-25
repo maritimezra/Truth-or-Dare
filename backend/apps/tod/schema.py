@@ -73,8 +73,6 @@ class Query:
             user_id = payload["user_id"]
             user = User.objects.get(id=user_id)
 
-            logger.info(f"Authenticated user: {user.username}, {user.email}")
-
             user_instance = UserType(
                 id=user.id,
                 username=user.username,
@@ -141,15 +139,12 @@ class Mutation:
         return player
 
     @strawberry.mutation
-    def remove_player(self, lobby_id: int, player_name: str) -> str:
+    def remove_player(self, lobby_id: int, player_id: int) -> str:
         lobby = Lobby.objects.get(id=lobby_id)
-        player = Player.objects.filter(lobby=lobby, name=player_name).first()
-
-        if player:
-            player.delete()
-            return f"Player {player_name} removed successfully from the lobby."
-        else:
-            return f"Player {player_name} not found in the lobby."
+        player = lobby.player.get(id=player_id)
+        lobby.player.remove(player)
+        player.delete()
+        return player
 
 
 schema = strawberry.Schema(
