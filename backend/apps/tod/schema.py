@@ -1,6 +1,7 @@
 import strawberry, jwt
 from typing import List, Optional
 from strawberry_django.optimizer import DjangoOptimizerExtension
+from strawberry.types import Info
 
 from apps.accounts.types import UserType
 from .types import LobbyType, PlayerType
@@ -12,15 +13,19 @@ from django.conf import settings
 @strawberry.type
 class Query:
     @strawberry.field
-    def get_creator(self, info, lobby_id: int) -> UserType:
+    def get_creator(self, info: Info, lobby_id: int) -> UserType:
         lobby = Lobby.objects.get(id=lobby_id)
-        request = info.context["request"]
-        if request.user == lobby.creator:
-            return request.user
-        else:
-            pass
-        return lobby.creator
-        # return lobby.creator.username
+        creator = lobby.creator
+        return UserType(
+            id=creator.id,
+            username=creator.username,
+            email=creator.email,
+            avatar=creator.avatar,
+            gender=creator.gender,
+            is_staff=creator.is_staff,
+            is_active=creator.is_active,
+            date_joined=creator.date_joined,
+        )
 
     @strawberry.field
     def get_lobbies(self, info) -> List[LobbyType]:
