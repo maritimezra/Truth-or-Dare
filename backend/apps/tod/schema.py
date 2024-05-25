@@ -151,6 +151,13 @@ class Mutation:
         player.delete()
         return player
 
+    @strawberry.mutation
+    def edit_player(self, id: int, new_name: str) -> Optional[PlayerType]:
+        player = Player.objects.get(id=id)
+        player.name = new_name
+        player.save()
+        return player
+
 
 schema = strawberry.Schema(
     query=Query,
