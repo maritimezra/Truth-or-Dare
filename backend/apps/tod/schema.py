@@ -29,23 +29,11 @@ class Query:
 
     @strawberry.field
     def get_lobbies(self, info) -> List[LobbyType]:
-        request = info.context["request"]
-        user = request.user
-        user_lobbies = Lobby.objects.filter(creator=user)
-
-        lobbies = [
-            Lobby(
-                id=lobby.id,
-                name=lobby.name,
-                level=lobby.level,
-                category=lobby.category,
-                creator=lobby.creator,
-                created_at=lobby.created_at,
-            )
-            for lobby in user_lobbies
-        ]
-
-        return lobbies
+        user = info.context.request.user
+        if user.is_authenticated:
+            lobbies = Lobby.objects.filter(creator=user)
+            return list(lobbies)
+        return []
 
     @strawberry.field
     def get_lobby(self, lobby_id: int) -> LobbyType:
