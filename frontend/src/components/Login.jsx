@@ -28,7 +28,7 @@ const Login = () => {
         console.log('Login successful');
         console.log('Token:', data.login.token)
         localStorage.setItem('token', data.login.token);
-        navigate('/create-lobby');
+        navigate('/');
       } else {
         setError('Invalid email or password');
       }
