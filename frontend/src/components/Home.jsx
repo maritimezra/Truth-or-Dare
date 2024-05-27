@@ -25,7 +25,7 @@ const CREATE_LOBBY = gql`
 const levels = ["Mild", "Moderate", "Wild"];
 const categories = ["Romance", "Travel", "Work", "Food", "Sex", "Parenting"];
 
-const CreateLobby = () => {
+const Home = () => {
   const [name, setName] = useState('');
   const [level, setLevel] = useState('');
   const [category, setCategory] = useState('');
@@ -94,5 +94,5 @@ const CreateLobby = () => {
   );
 };
 
-export default CreateLobby;
+export default Home;
 
