@@ -26,7 +26,7 @@ const Login = () => {
       const { data } = await loginUser({ variables: { email, password } });
       if (data && data.login && data.login.success) {
         console.log('Login successful');
-        console.log('Token:', data.login.token)
+        console.log('Token:', data.login.token);
         localStorage.setItem('token', data.login.token);
         navigate('/');
       } else {
@@ -42,25 +42,25 @@ const Login = () => {
 
   return (
     <div>
-      <h2>Login</h2>
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button onClick={handleLogin} disabled={loading}>
-        {loading ? 'Logging in...' : 'Log In'}
-      </button>
+        <h2>Login</h2>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button onClick={handleLogin} disabled={loading}>
+          {loading ? 'Logging in...' : 'Log In'}
+        </button>
       <p>Dont have an account? <Link to="/signup">Create one</Link></p>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-    </div>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+      </div>
   );
 };
 
