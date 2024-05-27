@@ -1,7 +1,8 @@
 import { useState} from 'react';
 import { useQuery, useMutation, gql } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
+import LoginModal from './Login';
 
 const CREATE_LOBBY = gql`
   mutation CreateLobby($name: String!, $level: String!, $category: String!) {
@@ -38,6 +39,7 @@ const Home = () => {
   const [name, setName] = useState('');
   const [level, setLevel] = useState('');
   const [category, setCategory] = useState('');
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const navigate = useNavigate();
 
   const { loading, error, data, refetch } = useQuery(GET_LOBBIES);
@@ -78,7 +80,7 @@ const Home = () => {
             Truth or Dare
           </div>
           <div className="menubar-right">
-            <Link to="/login">Login</Link>
+            <button onClick={() => setIsLoginModalOpen(true)}>Login</button>
           </div>
         </div>
       </div>
@@ -113,6 +115,8 @@ const Home = () => {
           </li>
         ))}
       </ul>
+
+      <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
     </div>
   );
 };
