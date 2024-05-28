@@ -29,11 +29,22 @@ class Query:
 
     @strawberry.field
     def get_lobbies(self, info) -> List[LobbyType]:
-        user = info.context.request.user
-        if user.is_authenticated:
+        auth_header = info.context.request.headers.get("Authorization", "")
+        if auth_header.startswith("Bearer "):
+            token = auth_header.split(" ")[1]
+        else:
+            raise Exception("Invalid Authorization header format.")
+
+        try:
+            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
+            user_id = payload["user_id"]
+            user = User.objects.get(id=user_id)
             lobbies = Lobby.objects.filter(creator=user)
             return list(lobbies)
-        return []
+        except jwt.ExpiredSignatureError:
+            raise Exception("Token expired. Please log in again.")
+        except jwt.exceptions.DecodeError:
+            raise Exception("Invalid token. Please log in again.")
 
     @strawberry.field
     def get_lobby(self, lobby_id: int) -> LobbyType:
@@ -51,35 +62,6 @@ class Query:
         player_names = [player.name for player in players]
         random.shuffle(player_names)
         return player_names
-
-    @strawberry.field
-    def me(self, info) -> UserType:
-        auth_header = info.context.request.headers.get("Authorization", "")
-        if auth_header.startswith("Bearer "):
-            token = auth_header.split(" ")[1]
-        else:
-            raise Exception("Invalid Authorization header format.")
-
-        try:
-            # Decode the JWT token to get the user information
-            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
-            user_id = payload["user_id"]
-            user = User.objects.get(id=user_id)
-
-            user_instance = UserType(
-                id=user.id,
-                username=user.username,
-                email=user.email,
-                avatar=user.avatar,
-                gender=user.gender,
-                is_staff=user.is_staff,
-                is_active=user.is_active,
-                date_joined=str(user.date_joined),
-            )
-
-            return user_instance
-        except (jwt.DecodeError, User.DoesNotExist):
-            raise Exception("User is not logged in")
 
 
 @strawberry.type

@@ -25,49 +25,61 @@ class Query:
         return User.objects.all()
 
     @strawberry.field
-    @login_required
     def me(self, info) -> UserType:
-        return info.context.request.user
+        auth_header = info.context.request.headers.get("Authorization", "")
+        if auth_header.startswith("Bearer "):
+            token = auth_header.split(" ")[1]
+        else:
+            raise Exception("Invalid Authorization header format.")
+
+        try:
+            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
+            user_id = payload["user_id"]
+            user = User.objects.get(id=user_id)
+
+            user_instance = UserType(
+                id=user.id,
+                username=user.username,
+                email=user.email,
+                avatar=user.avatar,
+                gender=user.gender,
+                is_staff=user.is_staff,
+                is_active=user.is_active,
+                date_joined=str(user.date_joined),
+            )
+
+            return user_instance
+        except (jwt.DecodeError, User.DoesNotExist):
+            raise Exception("User is not logged in")
 
     @strawberry.field
     def get_username(self, info) -> UserType:
-        user = info.context.request.user
-        if user.is_authenticated:
-            # Get the JWT token from the request headers
-            auth_header = info.context.request.headers.get("Authorization")
-            if auth_header and auth_header.startswith("Bearer "):
-                token = auth_header.split(" ")[1]
-                try:
-                    # Decode the JWT token
-                    decoded_token = jwt.decode(
-                        token, settings.SECRET_KEY, algorithms=["HS256"]
-                    )
-                    user_id = decoded_token.get("user_id")
-                    email = decoded_token.get("email")
-                    if user_id and email:
-                        # Assuming user information is stored in the database
-                        user = User.objects.get(id=user_id, email=email)
-                        return UserType(
-                            id=user.id,
-                            username=user.username,
-                            avatar=user.avatar,
-                            email=user.email,
-                            is_staff=user.is_staff,
-                            is_active=user.is_active,
-                            gender=user.gender,
-                            date_joined=user.date_joined,
-                        )
-                except jwt.ExpiredSignatureError:
-                    # Handle token expiration error
-                    print("JWT token has expired")
-                except jwt.InvalidTokenError:
-                    # Handle invalid token error
-                    print("Invalid JWT token")
-            else:
-                print("Authorization header is missing or invalid")
-        return (
-            None  # Return None if user is not authenticated or if token decoding fails
-        )
+        auth_header = info.context.request.headers.get("Authorization", "")
+        if auth_header.startswith("Bearer "):
+            token = auth_header.split(" ")[1]
+        else:
+            raise Exception("Invalid Authorization header format.")
+
+        try:
+            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
+            user_id = payload["user_id"]
+            user = User.objects.get(id=user_id)
+            return UserType(
+                id=user.id,
+                username=user.username,
+                avatar=user.avatar,
+                email=user.email,
+                is_staff=user.is_staff,
+                is_active=user.is_active,
+                gender=user.gender,
+                date_joined=user.date_joined,
+            )
+        except jwt.ExpiredSignatureError:
+            print("JWT token has expired")
+        except jwt.InvalidTokenError:
+            print("Invalid JWT token")
+
+        return None
 
 
 @strawberry.type
@@ -89,14 +101,12 @@ class Mutation:
 
     @strawberry.mutation
     def login(self, info, email: str, password: str) -> LoginResponse:
-        # Authenticate user
         user = authenticate(email=email, password=password)
 
         if user is not None and user.is_authenticated:
             print(f"Authenticated user: {user.email}")
             setattr(info.context.request, "user", user)
 
-            # Generate a JWT token with user information
             token_payload = {
                 "user_id": user.id,
                 "email": user.email,
@@ -105,7 +115,6 @@ class Mutation:
 
             return LoginResponse(success=True, token=token)
         else:
-            # Return error response if authentication fails
             print("Authentication failed")
             return LoginResponse(success=False, token=None)
 

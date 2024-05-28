@@ -31,6 +31,14 @@ const GET_LOBBIES = gql`
   }
 `;
 
+const GET_USERNAME = gql`
+  query GetUsername {
+    getUsername {
+      username
+    }
+  }
+`;
+
 
 const levels = ["Mild", "Moderate", "Wild"];
 const categories = ["Romance", "Travel", "Work", "Food", "Sex", "Parenting"];
@@ -42,6 +50,7 @@ const Home = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const navigate = useNavigate();
 
+  const { loading: usernameLoading, error: usernameError, data: usernameData } = useQuery(GET_USERNAME);
   const { loading, error, data, refetch } = useQuery(GET_LOBBIES);
   const [createLobby] = useMutation(CREATE_LOBBY);
 
@@ -62,11 +71,12 @@ const Home = () => {
     }
   };
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  if (loading || usernameLoading) return <p>Loading...</p>;
+  if (error || usernameError) return <p>{error ? error.message : usernameError.message}</p>;
 
 
   const lobbies = data.getLobbies;
+  const username = usernameData.getUsername.username;
 
   return (
     <div>
@@ -76,7 +86,11 @@ const Home = () => {
             Truth or Dare
           </div>
           <div className="menubar-right">
-            <button onClick={() => setIsLoginModalOpen(true)}>Login</button>
+            {username ? (
+              <p>Hi, {username}</p>
+            ):(
+              <button onClick={() => setIsLoginModalOpen(true)}>Login</button>
+            )}
           </div>
         </div>
       </div>
