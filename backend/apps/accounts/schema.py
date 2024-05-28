@@ -31,7 +31,43 @@ class Query:
 
     @strawberry.field
     def get_username(self, info) -> UserType:
-        return info.context.request.user
+        user = info.context.request.user
+        if user.is_authenticated:
+            # Get the JWT token from the request headers
+            auth_header = info.context.request.headers.get("Authorization")
+            if auth_header and auth_header.startswith("Bearer "):
+                token = auth_header.split(" ")[1]
+                try:
+                    # Decode the JWT token
+                    decoded_token = jwt.decode(
+                        token, settings.SECRET_KEY, algorithms=["HS256"]
+                    )
+                    user_id = decoded_token.get("user_id")
+                    email = decoded_token.get("email")
+                    if user_id and email:
+                        # Assuming user information is stored in the database
+                        user = User.objects.get(id=user_id, email=email)
+                        return UserType(
+                            id=user.id,
+                            username=user.username,
+                            avatar=user.avatar,
+                            email=user.email,
+                            is_staff=user.is_staff,
+                            is_active=user.is_active,
+                            gender=user.gender,
+                            date_joined=user.date_joined,
+                        )
+                except jwt.ExpiredSignatureError:
+                    # Handle token expiration error
+                    print("JWT token has expired")
+                except jwt.InvalidTokenError:
+                    # Handle invalid token error
+                    print("Invalid JWT token")
+            else:
+                print("Authorization header is missing or invalid")
+        return (
+            None  # Return None if user is not authenticated or if token decoding fails
+        )
 
 
 @strawberry.type

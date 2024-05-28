@@ -10,14 +10,11 @@ const GET_USERNAME = gql`
 `;
 
 const Profile = () => {
-  // Use useQuery hook to execute the GraphQL query
   const { loading, error, data } = useQuery(GET_USERNAME);
 
-  // State to store the username
   const [username, setUsername] = useState(null);
 
   useEffect(() => {
-    // Update the username state when data is fetched
     if (data && data.getUsername) {
       setUsername(data.getUsername.username);
     }

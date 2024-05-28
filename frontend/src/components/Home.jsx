@@ -1,7 +1,6 @@
-import { useState} from 'react';
+import { useState } from 'react';
 import { useQuery, useMutation, gql } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
-// import { Link } from 'react-router-dom';
 import LoginModal from './Login';
 
 const CREATE_LOBBY = gql`
@@ -32,6 +31,7 @@ const GET_LOBBIES = gql`
   }
 `;
 
+
 const levels = ["Mild", "Moderate", "Wild"];
 const categories = ["Romance", "Travel", "Work", "Food", "Sex", "Parenting"];
 
@@ -51,12 +51,7 @@ const Home = () => {
 
     try {
       const { data } = await createLobby({
-        variables: { name, level, category },
-        context: {
-          headers: {
-            Authorization: token ? `Bearer ${token}` : "",
-          },
-        },
+        variables: { name, level, category }
       });
       console.log('Lobby created:', data.createLobby);
       const lobbyId = data.createLobby.id;
@@ -69,6 +64,7 @@ const Home = () => {
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
+
 
   const lobbies = data.getLobbies;
 
