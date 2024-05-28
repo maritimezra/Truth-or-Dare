@@ -50,7 +50,11 @@ const Home = () => {
           </div>
         </div>
       </div>
+      <div>
       <CreateLobby refetchLobbies={refetch} />
+      </div>
+      
+      <div>
       <h2>Your Lobbies</h2>
       <ul>
         {lobbies.map((lobby) => (
@@ -61,6 +65,8 @@ const Home = () => {
           </li>
         ))}
       </ul>
+      </div>
+      
 
       <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
     </div>
