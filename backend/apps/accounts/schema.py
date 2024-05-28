@@ -29,6 +29,10 @@ class Query:
     def me(self, info) -> UserType:
         return info.context.request.user
 
+    @strawberry.field
+    def get_username(self, info) -> UserType:
+        return info.context.request.user
+
 
 @strawberry.type
 class Mutation:
