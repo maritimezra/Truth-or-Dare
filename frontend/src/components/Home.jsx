@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useQuery, gql } from '@apollo/client';
-// import { useNavigate } from 'react-router-dom';
 import LoginModal from './Login';
 import CreateLobby from './CreateLobby';
 
@@ -25,7 +24,6 @@ const GET_USERNAME = gql`
 
 const Home = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  // const navigate = useNavigate();
 
   const { loading: usernameLoading, error: usernameError, data: usernameData } = useQuery(GET_USERNAME);
   const { loading, error, data, refetch } = useQuery(GET_LOBBIES);

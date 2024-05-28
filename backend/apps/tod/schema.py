@@ -81,14 +81,12 @@ class Mutation:
             raise Exception("Invalid Authorization header format.")
 
         try:
-            # Decode the JWT token to get the user information
             payload = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
             user_id = payload["user_id"]
             user = User.objects.get(id=user_id)
         except (jwt.DecodeError, User.DoesNotExist):
             raise Exception("Authentication required to create a lobby.")
 
-        # Create the new lobby
         lobby = Lobby.objects.create(
             name=name,
             creator=user,
