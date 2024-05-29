@@ -15,6 +15,7 @@ from .types import LoginResponse, UserType
 
 from django.conf import settings
 from strawberry.types import Info
+from django.contrib.auth import logout as auth_logout
 
 
 @strawberry.type
@@ -120,13 +121,11 @@ class Mutation:
 
     @strawberry.mutation
     def logout(self, info) -> bool:
-        user = info.context.request.user
-
-        if user:
-            setattr(info.context.request, "revokeTokens", True)
+        request = info.context.request
+        if request.user.is_authenticated:
+            auth_logout(request)
             return True
-        else:
-            return False
+        return False
 
     @strawberry.mutation
     @login_required

@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useQuery, gql } from '@apollo/client';
 import LoginModal from './Login';
 import CreateLobby from './CreateLobby';
+import ProfileModal from './ProfileModal';
+
 
 const GET_LOBBIES = gql`
   query GetLobbies {
@@ -24,6 +26,7 @@ const GET_USERNAME = gql`
 
 const Home = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 
   const { loading: usernameLoading, error: usernameError, data: usernameData } = useQuery(GET_USERNAME);
   const { loading, error, data, refetch } = useQuery(GET_LOBBIES);
@@ -43,7 +46,10 @@ const Home = () => {
           </div>
           <div className="menubar-right">
             {username ? (
+              <>
               <p>Hi, {username}</p>
+              <button onClick={() => setIsProfileModalOpen(true)}>Profile</button>
+              </>
             ) : (
               <button onClick={() => setIsLoginModalOpen(true)}>Login</button>
             )}
@@ -69,6 +75,7 @@ const Home = () => {
       
 
       <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
+      <ProfileModal isOpen={isProfileModalOpen} onClose={() => setIsProfileModalOpen(false)} />
     </div>
   );
 };
