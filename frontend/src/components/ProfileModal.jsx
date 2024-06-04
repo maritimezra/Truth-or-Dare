@@ -1,5 +1,6 @@
 import { useQuery, useMutation, gql } from '@apollo/client';
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 
 const ME = gql`
   query Me {
@@ -20,13 +21,14 @@ const LOGOUT = gql`
 const ProfileModal = ({ isOpen, onClose }) => {
   const { loading, error, data } = useQuery(ME);
   const [logout] = useMutation(LOGOUT);
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
       await logout();
       localStorage.removeItem('token');
       console.log("Successfully logged out")
-    //window.location.href = '/login'; // Redirect to login page
+      navigate("/login");
     } catch (error) {
       console.error('Error logging out:', error);
     }
