@@ -119,13 +119,38 @@ class Mutation:
             print("Authentication failed")
             return LoginResponse(success=False, token=None)
 
+    # @strawberry.mutation
+    # def logout(self, info) -> bool:
+    #     request = info.context.request
+    #     if request.user.is_authenticated:
+    #         auth_logout(request)
+    #         return True
+    #     return False
+
     @strawberry.mutation
-    def logout(self, info) -> bool:
-        request = info.context.request
-        if request.user.is_authenticated:
-            auth_logout(request)
-            return True
-        return False
+    def logout(self, info) -> str:
+        auth_header = info.context.request.headers.get("Authorization", "")
+        if auth_header.startswith("Bearer "):
+            token = auth_header.split(" ")[1]
+        else:
+            raise Exception("Invalid Authorization header format.")
+
+        try:
+            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
+            user_id = payload["user_id"]
+            user = User.objects.get(id=user_id)
+            # Here, you can implement your logic to revoke the token.
+            # For simplicity, this example just assumes the token is stored and marks it as revoked.
+            # You can implement a more sophisticated token revocation strategy as needed.
+            user.token = None
+            user.save()
+            return "Logged out successfully."
+        except jwt.ExpiredSignatureError:
+            raise Exception("Token expired. Please log in again.")
+        except jwt.exceptions.DecodeError:
+            raise Exception("Invalid token. Please log in again.")
+        except User.DoesNotExist:
+            raise Exception("User not found.")
 
     @strawberry.mutation
     @login_required

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useMutation, gql } from '@apollo/client';
-import Modal from 'react-modal';
-import PropTypes from 'prop-types';
+import { useNavigate, Link } from 'react-router-dom';
+
 
 const LOGIN_USER = gql`
   mutation Login($email: String!, $password: String!) {
@@ -12,11 +12,13 @@ const LOGIN_USER = gql`
   }
 `;
 
-const LoginModal = ({ isOpen, onClose }) => {
+const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const [loginUser] = useMutation(LOGIN_USER);
 
@@ -28,7 +30,7 @@ const LoginModal = ({ isOpen, onClose }) => {
         console.log('Login successful');
         console.log('Token:', data.login.token);
         localStorage.setItem('token', data.login.token);
-        onClose(); // Close the modal after successful login
+        navigate('/');
       } else {
         setError('Invalid email or password');
       }
@@ -41,7 +43,7 @@ const LoginModal = ({ isOpen, onClose }) => {
   };
 
   return (
-    <Modal isOpen={isOpen} onRequestClose={onClose} contentLabel="Login Modal">
+    <div>
       <h2>Login</h2>
       <input
         type="email"
@@ -59,13 +61,11 @@ const LoginModal = ({ isOpen, onClose }) => {
         {loading ? 'Logging in...' : 'Log In'}
       </button>
       {error && <p style={{ color: 'red' }}>{error}</p>}
-      <button onClick={onClose}>Close</button>
-    </Modal>
+      <p>
+        Dont have an account? <Link to="/signup">Create account</Link>
+      </p>
+    </div>
   );
 };
-LoginModal.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
-};
 
-export default LoginModal;
+export default Login;

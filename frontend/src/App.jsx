@@ -1,24 +1,19 @@
-import {useState}from 'react';
 import { ApolloProvider, ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; 
 import Home from './components/Home';
-import LoginModal from './components/Login';
+import Login from './components/Login';
 import Signup from './components/Signup';
+import CreateLobby from './components/CreateLobby';
 import LobbyInstance from './components/LobbyInstance';
-import Modal from 'react-modal'
-
-
-Modal.setAppElement('#root');
+import PrivateRoute from './components/PrivateRoute';
 
 const httpLink = createHttpLink({
   uri: 'http://127.0.0.1:8000/graphql/',
 });
 
 const authLink = setContext((_, { headers }) => {
-  // get the authentication token from local storage if it exists
   const token = localStorage.getItem('token');
-  // return the headers to the context so httpLink can read them
   return {
     headers: {
       ...headers,
@@ -33,21 +28,19 @@ const client = new ApolloClient({
 });
 
 const App = () => {
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   return (
     <ApolloProvider client={client}>
       <Router>
-        <div>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} /> }/>
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/lobbies/:lobbyId" element={<LobbyInstance />} />
-          </Routes>
-        </div>
+        <Routes>
+          <Route path="/" element={<PrivateRoute element={Home} />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/create-lobby" element={<PrivateRoute element={CreateLobby} />} />
+          <Route path="/lobbies/:lobbyId" element={<PrivateRoute element={LobbyInstance} />} />
+        </Routes>
       </Router>
     </ApolloProvider>
-  )
+  );
 };
 
 export default App;

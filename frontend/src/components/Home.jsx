@@ -1,9 +1,7 @@
 import { useState } from 'react';
 import { useQuery, gql } from '@apollo/client';
-import LoginModal from './Login';
-import CreateLobby from './CreateLobby';
+import { useNavigate } from 'react-router-dom';
 import ProfileModal from './ProfileModal';
-
 
 const GET_LOBBIES = gql`
   query GetLobbies {
@@ -25,11 +23,24 @@ const GET_USERNAME = gql`
 `;
 
 const Home = () => {
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const navigate = useNavigate();
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 
+  const handleCreateNew = () => {
+    navigate('/create-lobby');
+  };
+
   const { loading: usernameLoading, error: usernameError, data: usernameData } = useQuery(GET_USERNAME);
+  // eslint-disable-next-line no-unused-vars
   const { loading, error, data, refetch } = useQuery(GET_LOBBIES);
+
+  const openProfileModal = () => {
+    setIsProfileModalOpen(true);
+  };
+
+  const closeProfileModal = () => {
+    setIsProfileModalOpen(false);
+  };
 
   if (loading || usernameLoading) return <p>Loading...</p>;
   if (error || usernameError) return <p>{error ? error.message : usernameError.message}</p>;
@@ -40,42 +51,30 @@ const Home = () => {
   return (
     <div>
       <div>
-        <div className="menubar">
-          <div className="menubar-left">
-            Truth or Dare
-          </div>
-          <div className="menubar-right">
-            {username ? (
-              <>
-              <p>Hi, {username}</p>
-              <button onClick={() => setIsProfileModalOpen(true)}>Profile</button>
-              </>
-            ) : (
-              <button onClick={() => setIsLoginModalOpen(true)}>Login</button>
-            )}
-          </div>
-        </div>
+        <h1>Play Truth or Dare</h1>
       </div>
       <div>
-      <CreateLobby refetchLobbies={refetch} />
+        <h2>Hi, {username}</h2>
       </div>
-      
       <div>
-      <h2>Your Lobbies</h2>
-      <ul>
-        {lobbies.map((lobby) => (
-          <li key={lobby.id}>
-            <h3>{lobby.name}</h3>
-            <p>Level: {lobby.level}</p>
-            <p>Category: {lobby.category}</p>
-          </li>
-        ))}
-      </ul>
+      {/* <CreateLobby refetchLobbies={refetch} /> */}
       </div>
-      
+      <div>
+        <h2>Your Lobbies</h2>
+        <ul>
+          {lobbies.map((lobby) => (
+            <li key={lobby.id}>
+              <h3>{lobby.name}</h3>
+              <p>Level: {lobby.level}</p>
+              <p>Category: {lobby.category}</p>
+            </li>
+          ))}
+        </ul>
+        <button onClick={handleCreateNew}>Create New</button>
+        <button onClick={openProfileModal}>Profile</button>
+      </div>
 
-      <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
-      <ProfileModal isOpen={isProfileModalOpen} onClose={() => setIsProfileModalOpen(false)} />
+      <ProfileModal isOpen={isProfileModalOpen} onClose={closeProfileModal} />
     </div>
   );
 };

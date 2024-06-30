@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useMutation, gql } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
-import PropTypes from 'prop-types';
+
 
 const CREATE_LOBBY = gql`
   mutation CreateLobby($name: String!, $level: String!, $category: String!) {
@@ -23,7 +23,7 @@ const CREATE_LOBBY = gql`
 const levels = ["Mild", "Moderate", "Wild"];
 const categories = ["Romance", "Travel", "Work", "Food", "Sex", "Parenting"];
 
-const CreateLobby = ({ refetchLobbies }) => {
+const CreateLobby = () => {
   const [name, setName] = useState('');
   const [level, setLevel] = useState('');
   const [category, setCategory] = useState('');
@@ -38,11 +38,15 @@ const CreateLobby = ({ refetchLobbies }) => {
       });
       console.log('Lobby created:', data.createLobby);
       const lobbyId = data.createLobby.id;
-      refetchLobbies();
+      
       navigate(`/lobbies/${lobbyId}`);
     } catch (error) {
       console.error('Error creating lobby:', error);
     }
+  };
+
+  const handleBack = async () => {
+    navigate('/');
   };
 
   return (
@@ -67,12 +71,10 @@ const CreateLobby = ({ refetchLobbies }) => {
         ))}
       </select>
       <button onClick={handleCreateLobby}>Create Lobby</button>
+      <button onClick={handleBack}>Back</button>
     </div>
   );
 };
 
-CreateLobby.propTypes = {
-    refetchLobbies: PropTypes.func.isRequired
-  };
 
 export default CreateLobby;
