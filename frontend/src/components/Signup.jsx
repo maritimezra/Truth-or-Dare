@@ -14,6 +14,12 @@ const CREATE_USER = gql`
   }
 `;
 
+const genderOptions = [
+  { value: 'M', label: 'Male' },
+  { value: 'F', label: 'Female' },
+  { value: 'N', label: 'Nonbinary' },
+];
+
 const Signup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -51,12 +57,12 @@ const Signup = () => {
         value={username}
         onChange={(e) => setUsername(e.target.value)}
       />
-      <input
-        type="text" 
-        placeholder="Gender"
-        value={gender}
-        onChange={(e) => setGender(e.target.value)}
-      />
+      <select value={gender} onChange={(e) => setGender(e.target.value)}>
+        <option value="">Select Gender</option>
+        {genderOptions.map(option => (
+          <option key={option.value} value={option.value}>{option.label}</option>
+        ))}
+      </select>
       <input
         type="password"
         placeholder="Password"
