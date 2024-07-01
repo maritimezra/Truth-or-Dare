@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, gql, useApolloClient } from '@apollo/client';
 import Popup from 'reactjs-popup';
 
@@ -64,6 +64,7 @@ const GET_LOBBYID = gql`
 const LobbyInstance = () => {
   const { lobbyId } = useParams();
   const client = useApolloClient();
+  const navigate = useNavigate();
 
   const { loading: loadingLobby, error: errorLobby, data: dataLobby } = useQuery(GET_LOBBY, {
     variables: { lobbyId: parseInt(lobbyId) },
@@ -83,6 +84,7 @@ const LobbyInstance = () => {
   const [editingPlayerId, setEditingPlayerId] = useState(null);
   const [newPlayerName, setNewPlayerName] = useState('');
   const [selectedPlayerId, setSelectedPlayerId] = useState(null);
+
 
   const [addPlayer] = useMutation(ADD_PLAYER, {
     refetchQueries: [{ query: GET_PLAYERS, variables: { lobbyId: parseInt(lobbyId) } }],
@@ -177,6 +179,10 @@ const LobbyInstance = () => {
     }
   };
 
+  const handleHome = async () => {
+    navigate('/')
+  };
+
   return (
     <div>
       <h2>{lobby.name}</h2>
@@ -228,7 +234,8 @@ const LobbyInstance = () => {
         </div>
       </Popup>
       <button onClick={handleOpenModal}>Add Players</button>
-      <button>Start Game</button>
+      <button onClick={handleHome}>Home</button>
+      <button >Start Game</button>
     </div>
   );
 };

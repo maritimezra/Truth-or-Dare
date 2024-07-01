@@ -57,17 +57,12 @@ const Home = () => {
         <h2>Hi, {username}</h2>
       </div>
       <div>
-      {/* <CreateLobby refetchLobbies={refetch} /> */}
-      </div>
-      <div>
         <h2>Your Lobbies</h2>
         <ul>
           {lobbies.map((lobby) => (
-            <li key={lobby.id}>
+            <ul key={lobby.id} onClick={() => navigate(`/lobbies/${lobby.id}`)} style={{ cursor: 'pointer' }}>
               <h3>{lobby.name}</h3>
-              <p>Level: {lobby.level}</p>
-              <p>Category: {lobby.category}</p>
-            </li>
+            </ul>
           ))}
         </ul>
         <button onClick={handleCreateNew}>Create New</button>
@@ -80,3 +75,4 @@ const Home = () => {
 };
 
 export default Home;
+
