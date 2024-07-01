@@ -1,4 +1,5 @@
 Truth or Dare Game
+
 This project implements a Truth or Dare game using Django and React, designed for interactive gameplay management. It includes features for lobby and player administration, allowing users to add, edit, and remove players dynamically within a game lobby environment.
 
 Features
