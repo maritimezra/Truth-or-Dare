@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useQuery, useMutation, gql } from '@apollo/client';
+import { useQuery, useMutation, gql, useApolloClient } from '@apollo/client';
 import Popup from 'reactjs-popup';
 
 const ADD_PLAYER = gql`
@@ -21,11 +21,10 @@ const EDIT_PLAYER = gql`
   }
 `;
 
+
 const REMOVE_PLAYER = gql`
-  mutation RemovePlayer($playerId: Int!) {
-    removePlayer(playerId: $playerId) {
-      id
-    }
+  mutation RemovePlayer($lobbyId: Int!, $playerId: Int!) {
+    removePlayer(lobbyId: $lobbyId, playerId: $playerId)
   }
 `;
 
@@ -57,8 +56,16 @@ const GET_CREATOR = gql`
   }
 `;
 
+const GET_LOBBYID = gql`
+  query GetLobbyId($playerId: Int!) {
+    getLobbyid(playerId: $playerId)
+  }
+`;
+
 const LobbyInstance = () => {
   const { lobbyId } = useParams();
+  const client = useApolloClient();
+
   const { loading: loadingLobby, error: errorLobby, data: dataLobby } = useQuery(GET_LOBBY, {
     variables: { lobbyId: parseInt(lobbyId) },
   });
@@ -76,6 +83,7 @@ const LobbyInstance = () => {
   const [players, setPlayers] = useState([]);
   const [editingPlayerId, setEditingPlayerId] = useState(null);
   const [newPlayerName, setNewPlayerName] = useState('');
+  const [selectedPlayerId, setSelectedPlayerId] = useState(null);
 
   const [addPlayer] = useMutation(ADD_PLAYER, {
     refetchQueries: [{ query: GET_PLAYERS, variables: { lobbyId: parseInt(lobbyId) } }],
@@ -90,19 +98,15 @@ const LobbyInstance = () => {
   });
 
   useEffect(() => {
-    if (dataPlayers) {
-      setPlayers(dataPlayers.getPlayers);
-    }
-  }, [dataPlayers]);
-
-  useEffect(() => {
-    if (dataCreator && isModalOpen) {
+    if (dataPlayers && dataCreator) {
       const creatorName = dataCreator.getCreator.username;
-      if (!players.some(player => player.name === creatorName)) {
-        setPlayers(prevPlayers => [...prevPlayers, { id: 'creator', name: creatorName }]);
+      const updatedPlayers = [...dataPlayers.getPlayers];
+      if (!updatedPlayers.some(player => player.name === creatorName)) {
+        updatedPlayers.push({ id: 'creator', name: creatorName });
       }
+      setPlayers(updatedPlayers);
     }
-  }, [dataCreator, isModalOpen, players]);
+  }, [dataPlayers, dataCreator]);
 
   if (loadingLobby || loadingPlayers || loadingCreator) return <p>Loading...</p>;
   if (errorLobby) return <p>Error: {errorLobby.message}</p>;
@@ -127,20 +131,38 @@ const LobbyInstance = () => {
     });
   };
 
-  const handleEditPlayer = (playerId) => {
+  const handleEditPlayer = () => {
     editPlayer({
-      variables: { playerId: playerId, newName: newPlayerName },
+      variables: { playerId: parseInt(selectedPlayerId), newName: newPlayerName },
     }).then(() => {
       setEditingPlayerId(null);
       setNewPlayerName('');
+      setSelectedPlayerId(null);
     });
   };
 
-  const handleRemovePlayer = (playerId) => {
-    removePlayer({
-      variables: { playerId: playerId },
-    });
+  const handleRemovePlayer = async () => {
+    try {
+      const { data } = await client.query({
+        query: GET_LOBBYID,
+        variables: { playerId: parseInt(selectedPlayerId) },
+      });
+  
+      if (data.getLobbyid === parseInt(lobbyId)) {
+        removePlayer({
+          variables: { lobbyId: parseInt(lobbyId), playerId: parseInt(selectedPlayerId) },
+        }).then(() => {
+          setSelectedPlayerId(null);
+        });
+      } else {
+        alert("Player does not belong to this lobby.");
+      }
+    } catch (error) {
+      console.error('Error removing player:', error);
+    }
   };
+  
+  
 
   return (
     <div>
@@ -148,6 +170,49 @@ const LobbyInstance = () => {
       <p>Level: {lobby.level}</p>
       <p>Category: {lobby.category}</p>
       <button onClick={handleOpenModal}>Add Players</button>
+      <h3>Players</h3>
+      <ul>
+        {players.map((player) => (
+          <div key={player.id} style={{ display: 'flex', alignItems: 'center' }}>
+            <input
+              type="checkbox"
+              checked={selectedPlayerId === player.id}
+              onChange={() => setSelectedPlayerId(player.id)}
+            />
+            {editingPlayerId === player.id ? (
+              <>
+                <input
+                  type="text"
+                  value={newPlayerName}
+                  onChange={(e) => setNewPlayerName(e.target.value)}
+                />
+                <button onClick={handleEditPlayer}>Save</button>
+                <button onClick={() => setEditingPlayerId(null)}>Cancel</button>
+              </>
+            ) : (
+              <>
+                <span>{player.name}</span>
+                <select
+                  onChange={(e) => {
+                    if (e.target.value === 'edit') {
+                      setEditingPlayerId(player.id);
+                      setNewPlayerName(player.name);
+                    } else if (e.target.value === 'remove') {
+                      setSelectedPlayerId(player.id);
+                      handleRemovePlayer();
+                    }
+                    e.target.value = '';
+                  }}
+                >
+                  <option value="">Actions</option>
+                  <option value="edit">Edit</option>
+                  <option value="remove">Remove</option>
+                </select>
+              </>
+            )}
+          </div>
+        ))}
+      </ul>
       <Popup open={isModalOpen} closeOnDocumentClick={false} onClose={handleCloseModal}>
         <div>
           <h2>Add Player</h2>
@@ -159,41 +224,6 @@ const LobbyInstance = () => {
           />
           <button onClick={handleAddPlayer}>Add Player</button>
           <button onClick={handleCloseModal}>Done</button>
-          <h3>Players</h3>
-          <ul>
-            {players.map((player) => (
-              <div key={player.id} style={{ display: 'flex', alignItems: 'center' }}>
-                {editingPlayerId === player.id ? (
-                  <>
-                    <input
-                      type="text"
-                      value={newPlayerName}
-                      onChange={(e) => setNewPlayerName(e.target.value)}
-                    />
-                    <button onClick={() => handleEditPlayer(player.id)}>Save</button>
-                    <button onClick={() => setEditingPlayerId(null)}>Cancel</button>
-                  </>
-                ) : (
-                  <>
-                    <span>{player.name}</span>
-                    <select onChange={(e) => {
-                      if (e.target.value === 'edit') {
-                        setEditingPlayerId(player.id);
-                        setNewPlayerName(player.name);
-                      } else if (e.target.value === 'remove') {
-                        handleRemovePlayer(player.id);
-                      }
-                      e.target.value = '';
-                    }}>
-                      <option value="">Actions</option>
-                      <option value="edit">Edit</option>
-                      <option value="remove">Remove</option>
-                    </select>
-                  </>
-                )}
-              </div>
-            ))}
-          </ul>
         </div>
       </Popup>
     </div>

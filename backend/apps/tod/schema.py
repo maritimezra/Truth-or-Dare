@@ -50,6 +50,19 @@ class Query:
     def get_lobby(self, lobby_id: int) -> LobbyType:
         return Lobby.objects.get(id=lobby_id)
 
+    # @strawberry.field
+    # def get_lobbyid(self, player_id: int) -> int:
+    #     player = Player.objects.get(id=player_id)
+    #     return player.lobby.id
+
+    @strawberry.field
+    def get_lobbyid(self, player_id: int) -> int:
+        player = Player.objects.get(id=player_id)
+        lobby = Lobby.objects.filter(
+            player=player
+        ).first()  # Assuming a player can belong to only one lobby
+        return lobby.id if lobby else None
+
     @strawberry.field
     def get_players(self, lobby_id: int) -> List[PlayerType]:
         lobby = Lobby.objects.get(id=lobby_id)
@@ -117,11 +130,18 @@ class Mutation:
         player = lobby.player.get(id=player_id)
         lobby.player.remove(player)
         player.delete()
-        return player
+        return f"Player with ID {player_id} removed successfully."
+
+    # @strawberry.mutation
+    # def edit_player(self, id: int, new_name: str) -> Optional[PlayerType]:
+    #     player = Player.objects.get(id=id)
+    #     player.name = new_name
+    #     player.save()
+    #     return player
 
     @strawberry.mutation
-    def edit_player(self, id: int, new_name: str) -> Optional[PlayerType]:
-        player = Player.objects.get(id=id)
+    def edit_player(self, player_id: int, new_name: str) -> Optional[PlayerType]:
+        player = Player.objects.get(id=player_id)
         player.name = new_name
         player.save()
         return player
