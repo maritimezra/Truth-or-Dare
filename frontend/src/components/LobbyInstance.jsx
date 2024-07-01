@@ -228,6 +228,7 @@ const LobbyInstance = () => {
         </div>
       </Popup>
       <button onClick={handleOpenModal}>Add Players</button>
+      <button>Start Game</button>
     </div>
   );
 };
