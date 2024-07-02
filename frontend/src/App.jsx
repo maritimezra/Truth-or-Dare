@@ -7,6 +7,8 @@ import Signup from './components/Signup';
 import CreateLobby from './components/CreateLobby';
 import LobbyInstance from './components/LobbyInstance';
 import PrivateRoute from './components/PrivateRoute';
+import TOD from './components/TOD';
+
 
 const httpLink = createHttpLink({
   uri: 'http://127.0.0.1:8000/graphql/',
@@ -37,6 +39,7 @@ const App = () => {
           <Route path="/signup" element={<Signup />} />
           <Route path="/create-lobby" element={<PrivateRoute element={CreateLobby} />} />
           <Route path="/lobbies/:lobbyId" element={<PrivateRoute element={LobbyInstance} />} />
+          <Route path="/lobbies/:lobbyId/game" element={<PrivateRoute element={TOD} />} />
         </Routes>
       </Router>
     </ApolloProvider>

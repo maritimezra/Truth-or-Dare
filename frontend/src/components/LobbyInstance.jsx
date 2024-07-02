@@ -85,7 +85,6 @@ const LobbyInstance = () => {
   const [newPlayerName, setNewPlayerName] = useState('');
   const [selectedPlayerId, setSelectedPlayerId] = useState(null);
 
-
   const [addPlayer] = useMutation(ADD_PLAYER, {
     refetchQueries: [{ query: GET_PLAYERS, variables: { lobbyId: parseInt(lobbyId) } }],
   });
@@ -183,6 +182,10 @@ const LobbyInstance = () => {
     navigate('/')
   };
 
+  const handleStartGame = async () => {
+    navigate(`/lobbies/${lobbyId}/game`);
+  };
+
   return (
     <div>
       <h2>{lobby.name}</h2>
@@ -235,7 +238,7 @@ const LobbyInstance = () => {
       </Popup>
       <button onClick={handleOpenModal}>Add Players</button>
       <button onClick={handleHome}>Home</button>
-      <button >Start Game</button>
+      <button onClick={handleStartGame}>Start Game</button>
     </div>
   );
 };
