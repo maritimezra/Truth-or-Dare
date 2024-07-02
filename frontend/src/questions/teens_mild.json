@@ -1,0 +1,27 @@
+{
+    "truth": [
+      "What is your favorite subject in school?",
+      "Have you ever had a crush on a teacher?",
+      "What is your favorite movie?",
+      "Have you ever skipped a class?",
+      "What is your favorite hobby?",
+      "Have you ever cheated on a test?",
+      "What is the most embarrassing thing that has happened to you at school?",
+      "Who is your favorite celebrity?",
+      "What is your favorite book?",
+      "What is your favorite food?"
+    ],
+    "dare": [
+      "Do an impression of your favorite cartoon character.",
+      "Sing the chorus of your favorite song.",
+      "Do 10 jumping jacks.",
+      "Try to lick your elbow.",
+      "Say the alphabet backwards.",
+      "Do your best dance move.",
+      "Act like a chicken for 30 seconds.",
+      "Tell a joke and make everyone laugh.",
+      "Do a funny face until someone laughs.",
+      "Walk around the room like a crab."
+    ]
+  }
+  
