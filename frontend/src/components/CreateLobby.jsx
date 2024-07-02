@@ -21,7 +21,7 @@ const CREATE_LOBBY = gql`
 `;
 
 const levels = ["Mild", "Moderate", "Wild"];
-const categories = ["Romance", "Travel", "Work", "Food", "Sex", "Parenting"];
+const categories = ["GameNight", "Couple", "Teens"]
 
 const CreateLobby = () => {
   const [name, setName] = useState('');
