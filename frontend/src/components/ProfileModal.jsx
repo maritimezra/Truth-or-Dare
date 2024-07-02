@@ -18,6 +18,12 @@ const LOGOUT = gql`
   }
 `;
 
+const genderMapping = {
+  M: 'Male',
+  F: 'Female',
+  N: 'Nonbinary'
+};
+
 const ProfileModal = ({ isOpen, onClose }) => {
   const { loading, error, data } = useQuery(ME);
   const [logout] = useMutation(LOGOUT);
@@ -48,7 +54,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
         <h2>Profile Details</h2>
         <p><strong>Username:</strong> {username}</p>
         <p><strong>Email:</strong> {email}</p>
-        <p><strong>Gender:</strong> {gender}</p>
+        <p><strong>Gender:</strong> {genderMapping[gender] || gender}</p>
         <button onClick={handleLogout}>Logout</button>
       </div>
     </div>

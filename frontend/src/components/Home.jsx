@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery, gql } from '@apollo/client';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import ProfileModal from './ProfileModal';
 
 const GET_LOBBIES = gql`
@@ -24,15 +24,15 @@ const GET_USERNAME = gql`
 
 const Home = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+
+  const { loading: usernameLoading, error: usernameError, data: usernameData } = useQuery(GET_USERNAME);
+  const { loading, error, data, refetch } = useQuery(GET_LOBBIES);
 
   const handleCreateNew = () => {
     navigate('/create-lobby');
   };
-
-  const { loading: usernameLoading, error: usernameError, data: usernameData } = useQuery(GET_USERNAME);
-  // eslint-disable-next-line no-unused-vars
-  const { loading, error, data, refetch } = useQuery(GET_LOBBIES);
 
   const openProfileModal = () => {
     setIsProfileModalOpen(true);
@@ -41,6 +41,10 @@ const Home = () => {
   const closeProfileModal = () => {
     setIsProfileModalOpen(false);
   };
+
+  useEffect(() => {
+    refetch();
+  }, [location.key, refetch]);
 
   if (loading || usernameLoading) return <p>Loading...</p>;
   if (error || usernameError) return <p>{error ? error.message : usernameError.message}</p>;
@@ -75,4 +79,3 @@ const Home = () => {
 };
 
 export default Home;
-
