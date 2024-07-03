@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, gql } from '@apollo/client';
 
 import couplesMildTruthQuestions from './questions/couples/mild/truth.json';
@@ -51,6 +51,8 @@ const Tod = () => {
   const [currentTurn, setCurrentTurn] = useState(0);
   const [players, setPlayers] = useState([]);
   const [question, setQuestion] = useState('');
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (dataLineup && dataLineup.getLineup) {
@@ -137,6 +139,10 @@ const Tod = () => {
     fetchQuestion('dare', category, level);
   };
 
+  const handleEndGame = () => {
+    navigate('/')
+  }
+
   return (
     <div>
       <h1>Truth or Dare</h1>
@@ -145,6 +151,7 @@ const Tod = () => {
       <button onClick={handleDare}>Dare</button>
       {question && <p>{question}</p>}
       <button onClick={handleNextTurn}>Next Turn</button>
+      <button onClick={handleEndGame}>End Game</button>
     </div>
   );
 };
