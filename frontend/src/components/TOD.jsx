@@ -8,7 +8,7 @@ const GET_LINEUP = gql`
   }
 `;
 
-const TOD = () => {
+const Tod = () => {
   const { lobbyId } = useParams();
   const { loading, error, data } = useQuery(GET_LINEUP, {
     variables: { lobbyId: parseInt(lobbyId) },
@@ -41,5 +41,4 @@ const TOD = () => {
   );
 };
 
-// eslint-disable-next-line react-refresh/only-export-components
-export default TOD;
+export default Tod;
