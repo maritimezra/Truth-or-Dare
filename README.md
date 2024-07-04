@@ -1,20 +1,31 @@
 # Truth or Dare Game
 
-This project implements a Truth or Dare game using Django and React, designed for interactive gameplay management. It includes features for lobby and player administration, allowing users to add, edit, and remove players dynamically within a game lobby environment.
+This is a web-based application for playing the classic party game "Truth or Dare." It allows users to create lobbies, add players, and play the game with a dynamic set of questions based on the chosen category and level. The application uses Django for the backend, GraphQL with Strawberry for the API, and React with Apollo Client for the frontend.
 
 ## Features
 
-- **Backend Management**: Built with Django, the backend handles data persistence and business logic. It utilizes GraphQL to efficiently query and mutate data, ensuring seamless interactions between the frontend and backend.
-  
-- **Frontend Interaction**: Developed using React, the frontend provides a responsive user interface. It includes features like modals for adding and managing players, ensuring a smooth and intuitive user experience.
+- **User Authentication and Authorization**
+  - **JWT-based Authentication**: Secure login and signup functionality using JSON Web Tokens (JWT).
 
-- **Player Management**: Users can add players to a lobby, edit player names, and remove players as needed. The frontend dynamically updates player lists and manages player actions using GraphQL mutations.
+- **Lobby Management**
+  - **Create Lobby**: Users can create a new lobby, specifying the category (Couples, Gamenight, Teens) and the level (Mild, Moderate, Wild) of the game.
+  - **Rejoin Lobby**: Users can rejoin a lobby they previously created.
+  - **Add Players**: Users can add players to the lobby by specifying their names or selecting from a list of previously added players.
+  - **Edit/Remove Players**: Users can edit players' names or remove players from the lobby.
 
-## Technologies Used
+- **Game Play**
+  - **Player Lineup**: A random player lineup is generated to define the order in which players will take turns.
+  - **Truth or Dare Questions**: Players take turns choosing between "Truth" or "Dare" and are asked random questions from a large pool of questions.
+  - **End Game**: The creator of the game has the option to end the game at any time.
 
-- **Django**: Handles backend logic, data models, and GraphQL integration.
-- **React**: Provides a modern, component-based frontend interface.
-- **GraphQL**: Facilitates efficient data fetching and mutation operations.
-- **Apollo Client**: Manages GraphQL state and data fetching on the frontend.
-- **Reactjs-Popup**: Used for modal components in the frontend UI.
+## Technology Stack
 
+- **Backend**
+  - **Python (Django)**: Provides the core backend functionality, including user authentication, lobby management, and game logic.
+
+- **API**
+  - **GraphQL (Strawberry)**: Handles all data querying and mutations, offering a flexible and efficient API for the frontend to interact with.
+
+- **Frontend**
+  - **React**: Powers the user interface, ensuring a responsive and interactive user experience.
+  - **Apollo Client**: Manages GraphQL queries and mutations, making it easy to interact with the backend API.
