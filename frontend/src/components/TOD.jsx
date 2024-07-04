@@ -50,7 +50,7 @@ const Tod = () => {
 
   const [currentTurn, setCurrentTurn] = useState(0);
   const [players, setPlayers] = useState([]);
-  const [question, setQuestion] = useState('');
+  const [question, setQuestion] = useState('To play, choose either Truth or Dare');
 
   const navigate = useNavigate();
 
@@ -120,12 +120,10 @@ const Tod = () => {
     setQuestion(randomQuestion);
   };
 
-
   const handleNextTurn = () => {
     setCurrentTurn((prevTurn) => (prevTurn + 1) % players.length);
-    setQuestion('');
+    setQuestion('To play, choose either Truth or Dare');
   };
-
 
   const handleTruth = () => {
     if (!dataLobby || !dataLobby.getLobby) return;
@@ -150,9 +148,8 @@ const Tod = () => {
       <button onClick={handleTruth}>Truth</button>
       <button onClick={handleDare}>Dare</button>
       <div>
-        {question && <p>{question}</p>}
+        <p>{question}</p>
       </div>
-      
       <button onClick={handleNextTurn}>Next Turn</button>
       <button onClick={handleEndGame}>End Game</button>
     </div>
