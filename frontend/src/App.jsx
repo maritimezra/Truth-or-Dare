@@ -39,8 +39,8 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/create-lobby" element={<PrivateRoute element={CreateLobby} />} />
-          <Route path="/lobbies/:lobbyId" element={<PrivateRoute element={LobbyInstance} />} />
-          <Route path="/lobbies/:lobbyId/game" element={<PrivateRoute element={Tod} />} />
+          <Route path="/lobby-details" element={<PrivateRoute element={LobbyInstance} />} />
+          <Route path="/play-game" element={<PrivateRoute element={Tod} />} />
           <Route path="/logout" element={<Logout />} />
         </Routes>
       </Router>

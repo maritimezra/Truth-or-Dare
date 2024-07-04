@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useQuery, useMutation, gql, useApolloClient } from '@apollo/client';
 import Popup from 'reactjs-popup';
 
@@ -62,9 +62,12 @@ const GET_LOBBYID = gql`
 `;
 
 const LobbyInstance = () => {
-  const { lobbyId } = useParams();
-  const client = useApolloClient();
+  const location = useLocation();
   const navigate = useNavigate();
+  const client = useApolloClient();
+
+  const searchParams = new URLSearchParams(location.search);
+  const lobbyId = searchParams.get('id');
 
   const { loading: loadingLobby, error: errorLobby, data: dataLobby } = useQuery(GET_LOBBY, {
     variables: { lobbyId: parseInt(lobbyId) },
@@ -183,7 +186,7 @@ const LobbyInstance = () => {
   };
 
   const handleStartGame = async () => {
-    navigate(`/lobbies/${lobbyId}/game`);
+    navigate(`/play-game?id=${lobbyId}`);
   };
 
   return (

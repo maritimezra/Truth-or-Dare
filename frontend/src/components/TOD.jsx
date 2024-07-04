@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useQuery, gql } from '@apollo/client';
 
 import couplesMildTruthQuestions from './questions/couples/mild/truth.json';
@@ -38,7 +38,10 @@ const GET_LINEUP = gql`
 `;
 
 const Tod = () => {
-  const { lobbyId } = useParams();
+  const location = useLocation();
+
+  const searchParams = new URLSearchParams(location.search);
+  const lobbyId = searchParams.get('id');
 
   const { loading: loadingLobby, error: errorLobby, data: dataLobby } = useQuery(GET_LOBBY, {
     variables: { lobbyId: parseInt(lobbyId) },

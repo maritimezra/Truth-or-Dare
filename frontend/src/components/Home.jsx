@@ -68,7 +68,8 @@ const Home = () => {
         <h2>Your Lobbies</h2>
         <ul>
           {lobbies.map((lobby) => (
-            <ul key={lobby.id} onClick={() => navigate(`/lobbies/${lobby.id}`)} style={{ cursor: 'pointer' }}>
+            <ul key={lobby.id} onClick={() => navigate(`/lobby-details?id=${lobby.id}`)} style={{ cursor: 'pointer' }}>
+
               <h3>{lobby.name}</h3>
             </ul>
           ))}
