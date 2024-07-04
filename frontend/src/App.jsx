@@ -8,6 +8,7 @@ import CreateLobby from './components/CreateLobby';
 import LobbyInstance from './components/LobbyInstance';
 import PrivateRoute from './components/PrivateRoute';
 import Tod from './components/TOD';
+import Logout from './components/Logout';
 
 
 const httpLink = createHttpLink({
@@ -40,6 +41,7 @@ const App = () => {
           <Route path="/create-lobby" element={<PrivateRoute element={CreateLobby} />} />
           <Route path="/lobbies/:lobbyId" element={<PrivateRoute element={LobbyInstance} />} />
           <Route path="/lobbies/:lobbyId/game" element={<PrivateRoute element={Tod} />} />
+          <Route path="/logout" element={<Logout />} />
         </Routes>
       </Router>
     </ApolloProvider>

@@ -27,8 +27,12 @@ const Home = () => {
   const location = useLocation();
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 
-  const { loading: usernameLoading, error: usernameError, data: usernameData } = useQuery(GET_USERNAME);
-  const { loading, error, data, refetch } = useQuery(GET_LOBBIES);
+  const { loading: usernameLoading, error: usernameError, data: usernameData } = useQuery(GET_USERNAME,{
+    fetchPolicy: 'network-only'
+  });
+  const { loading, error, data, refetch } = useQuery(GET_LOBBIES,{
+    fetchPolicy: 'network-only'
+  });
 
   const handleCreateNew = () => {
     navigate('/create-lobby');
