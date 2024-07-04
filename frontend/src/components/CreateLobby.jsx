@@ -39,7 +39,7 @@ const CreateLobby = () => {
       console.log('Lobby created:', data.createLobby);
       const lobbyId = data.createLobby.id;
       
-      navigate(`/lobbies/${lobbyId}`);
+      navigate(`/lobby-details/?id=${lobbyId}`);
     } catch (error) {
       console.error('Error creating lobby:', error);
     }
