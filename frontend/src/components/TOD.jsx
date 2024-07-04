@@ -149,7 +149,10 @@ const Tod = () => {
       <h2>Current Turn: {players[currentTurn]}</h2>
       <button onClick={handleTruth}>Truth</button>
       <button onClick={handleDare}>Dare</button>
-      {question && <p>{question}</p>}
+      <div>
+        {question && <p>{question}</p>}
+      </div>
+      
       <button onClick={handleNextTurn}>Next Turn</button>
       <button onClick={handleEndGame}>End Game</button>
     </div>
