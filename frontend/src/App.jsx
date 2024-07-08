@@ -2,13 +2,12 @@ import { ApolloProvider, ApolloClient, createHttpLink, InMemoryCache } from '@ap
 import { setContext } from '@apollo/client/link/context';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; 
 import Home from './components/Home';
-import Login from './components/Login';
-import Signup from './components/Signup';
 import CreateLobby from './components/CreateLobby';
 import LobbyInstance from './components/LobbyInstance';
 import PrivateRoute from './components/PrivateRoute';
 import Tod from './components/TOD';
-import Logout from './components/Logout';
+import Layout from './components/Layout';
+
 
 
 const httpLink = createHttpLink({
@@ -34,15 +33,14 @@ const App = () => {
   return (
     <ApolloProvider client={client}>
       <Router>
-        <Routes>
-          <Route path="/" element={<PrivateRoute element={Home} />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/create-lobby" element={<PrivateRoute element={CreateLobby} />} />
-          <Route path="/lobby-details" element={<PrivateRoute element={LobbyInstance} />} />
-          <Route path="/play-game" element={<PrivateRoute element={Tod} />} />
-          <Route path="/logout" element={<Logout />} />
-        </Routes>
+        <Layout>
+          <Routes>
+            <Route path="/" element={<PrivateRoute element={Home} />} />
+            <Route path="/create-lobby" element={<PrivateRoute element={CreateLobby} />} />
+            <Route path="/lobby-details" element={<PrivateRoute element={LobbyInstance} />} />
+            <Route path="/play-game" element={<PrivateRoute element={Tod} />} />
+          </Routes>
+          </Layout>
       </Router>
     </ApolloProvider>
   );

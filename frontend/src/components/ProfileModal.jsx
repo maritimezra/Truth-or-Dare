@@ -1,4 +1,4 @@
-import { useQuery, gql } from '@apollo/client';
+import { useQuery, gql, useApolloClient, useMutation } from '@apollo/client';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,6 +12,12 @@ const ME = gql`
   }
 `;
 
+const LOGOUT = gql`
+  mutation Logout {
+    logout
+  }
+`;
+
 
 const genderMapping = {
   M: 'Male',
@@ -21,10 +27,21 @@ const genderMapping = {
 
 const ProfileModal = ({ isOpen, onClose }) => {
   const { loading, error, data } = useQuery(ME);
+  const [logout] = useMutation(LOGOUT);
+
   const navigate = useNavigate();
+  const client = useApolloClient();
 
   const handleLogout = async () => {
-    navigate('/logout')
+    try {
+      await logout();
+      await client.resetStore();
+      localStorage.removeItem('token');
+      onClose();
+      navigate('/')
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
   };
 
   if (!isOpen) return null;
