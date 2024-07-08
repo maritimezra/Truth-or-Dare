@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useQuery, gql } from '@apollo/client';
 import { useNavigate, useLocation } from 'react-router-dom';
-import ProfileModal from './ProfileModal';
 
 const GET_LOBBIES = gql`
   query GetLobbies {
@@ -25,7 +24,6 @@ const GET_USERNAME = gql`
 const Home = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 
   const { loading: usernameLoading, error: usernameError, data: usernameData } = useQuery(GET_USERNAME,{
     fetchPolicy: 'network-only'
@@ -38,13 +36,6 @@ const Home = () => {
     navigate('/create-lobby');
   };
 
-  const openProfileModal = () => {
-    setIsProfileModalOpen(true);
-  };
-
-  const closeProfileModal = () => {
-    setIsProfileModalOpen(false);
-  };
 
   useEffect(() => {
     refetch();
@@ -59,9 +50,6 @@ const Home = () => {
   return (
     <div>
       <div>
-        <h1>Play Truth or Dare</h1>
-      </div>
-      <div>
         <h2>Hi, {username}</h2>
       </div>
       <div>
@@ -75,10 +63,9 @@ const Home = () => {
           ))}
         </ul>
         <button onClick={handleCreateNew}>Create New</button>
-        <button onClick={openProfileModal}>Profile</button>
       </div>
 
-      <ProfileModal isOpen={isProfileModalOpen} onClose={closeProfileModal} />
+
     </div>
   );
 };
