@@ -165,11 +165,7 @@ const LobbyInstanceModal = ({ isOpen, onClose, lobbyId }) => {
     } else if (action === 'remove') {
       handleRemovePlayer();
     }
-  };
-
-  const handleHome = async () => {
-    onClose();
-  };
+  }
 
   const handleStartGame = async () => {
     navigate(`/play-game?id=${lobbyId}`);
@@ -187,6 +183,7 @@ const LobbyInstanceModal = ({ isOpen, onClose, lobbyId }) => {
   return (
     <div className="modal">
       <div className="modal-content">
+      <span className="close" onClick={onClose}>&times;</span>
         <h2>{lobby.name}</h2>
         <p>Level: {lobby.level}</p>
         <p>Category: {lobby.category}</p>
@@ -235,7 +232,6 @@ const LobbyInstanceModal = ({ isOpen, onClose, lobbyId }) => {
         ) : (
           <button onClick={() => setIsAddingPlayer(true)}>Add Players</button>
         )}
-        <button onClick={handleHome}>Home</button>
         <button onClick={handleStartGame}>Start Game</button>
       </div>
     </div>

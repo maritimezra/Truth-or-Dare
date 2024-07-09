@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useMutation, gql } from '@apollo/client';
-import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import './CreateLobbyModal.css';
 
@@ -28,8 +27,6 @@ const CreateLobbyModal = ({ isOpen, onClose, onLobbyCreated }) => {
   const [name, setName] = useState('');
   const [level, setLevel] = useState('');
   const [category, setCategory] = useState('');
-  const navigate = useNavigate();
-
   const [createLobby] = useMutation(CREATE_LOBBY);
 
   const handleCreateLobby = async () => {
@@ -46,10 +43,6 @@ const CreateLobbyModal = ({ isOpen, onClose, onLobbyCreated }) => {
     }
   };
 
-  const handleBack = () => {
-    navigate('/');
-    onClose();
-  };
 
   if (!isOpen) return null;
 
@@ -77,7 +70,6 @@ const CreateLobbyModal = ({ isOpen, onClose, onLobbyCreated }) => {
           ))}
         </select>
         <button onClick={handleCreateLobby}>Create Lobby</button>
-        <button onClick={handleBack}>Back</button>
       </div>
     </div>
   );
