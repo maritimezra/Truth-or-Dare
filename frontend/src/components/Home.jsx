@@ -1,6 +1,8 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery, gql } from '@apollo/client';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import CreateLobbyModal from './CreateLobbyModal';
+import LobbyInstanceModal from './LobbyInstanceModal';
 
 const GET_LOBBIES = gql`
   query GetLobbies {
@@ -22,20 +24,40 @@ const GET_USERNAME = gql`
 `;
 
 const Home = () => {
-  const navigate = useNavigate();
   const location = useLocation();
+  const [isCreateLobbyModalOpen, setCreateLobbyModalOpen] = useState(false);
+  const [isLobbyInstanceModalOpen, setLobbyInstanceModalOpen] = useState(false);
+  const [selectedLobbyId, setSelectedLobbyId] = useState(null);
 
-  const { loading: usernameLoading, error: usernameError, data: usernameData } = useQuery(GET_USERNAME,{
+  const { loading: usernameLoading, error: usernameError, data: usernameData } = useQuery(GET_USERNAME, {
     fetchPolicy: 'network-only'
   });
-  const { loading, error, data, refetch } = useQuery(GET_LOBBIES,{
+  const { loading, error, data, refetch } = useQuery(GET_LOBBIES, {
     fetchPolicy: 'network-only'
   });
 
   const handleCreateNew = () => {
-    navigate('/create-lobby');
+    setCreateLobbyModalOpen(true);
   };
 
+  const closeCreateLobbyModal = () => {
+    setCreateLobbyModalOpen(false);
+  };
+
+  const handleLobbyClick = (lobbyId) => {
+    setSelectedLobbyId(parseInt(lobbyId));
+    setLobbyInstanceModalOpen(true);
+  };
+
+  const closeLobbyInstanceModal = () => {
+    setLobbyInstanceModalOpen(false);
+    setSelectedLobbyId(null);
+  };
+
+  const handleLobbyCreated = (lobbyId) => {
+    setSelectedLobbyId(lobbyId);
+    setLobbyInstanceModalOpen(true);
+  };
 
   useEffect(() => {
     refetch();
@@ -56,16 +78,25 @@ const Home = () => {
         <h2>Your Lobbies</h2>
         <ul>
           {lobbies.map((lobby) => (
-            <ul key={lobby.id} onClick={() => navigate(`/lobby-details?id=${lobby.id}`)} style={{ cursor: 'pointer' }}>
-
+            <li key={lobby.id} onClick={() => handleLobbyClick(lobby.id)} style={{ cursor: 'pointer' }}>
               <h3>{lobby.name}</h3>
-            </ul>
+            </li>
           ))}
         </ul>
         <button onClick={handleCreateNew}>Create New</button>
       </div>
-
-
+      <CreateLobbyModal
+        isOpen={isCreateLobbyModalOpen}
+        onClose={closeCreateLobbyModal}
+        onLobbyCreated={handleLobbyCreated}
+      />
+      {selectedLobbyId && (
+        <LobbyInstanceModal
+          isOpen={isLobbyInstanceModalOpen}
+          onClose={closeLobbyInstanceModal}
+          lobbyId={selectedLobbyId ? parseInt(selectedLobbyId) : null}
+        />
+      )}
     </div>
   );
 };

@@ -2,8 +2,6 @@ import { ApolloProvider, ApolloClient, createHttpLink, InMemoryCache } from '@ap
 import { setContext } from '@apollo/client/link/context';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; 
 import Home from './components/Home';
-import CreateLobby from './components/CreateLobby';
-import LobbyInstance from './components/LobbyInstance';
 import PrivateRoute from './components/PrivateRoute';
 import Tod from './components/TOD';
 import Layout from './components/Layout';
@@ -36,8 +34,6 @@ const App = () => {
         <Layout>
           <Routes>
             <Route path="/" element={<PrivateRoute element={Home} />} />
-            <Route path="/create-lobby" element={<PrivateRoute element={CreateLobby} />} />
-            <Route path="/lobby-details" element={<PrivateRoute element={LobbyInstance} />} />
             <Route path="/play-game" element={<PrivateRoute element={Tod} />} />
           </Routes>
           </Layout>
