@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useQuery, gql } from '@apollo/client';
 import { useLocation } from 'react-router-dom';
-import CreateLobbyModal from './CreateLobbyModal';
-import LobbyInstanceModal from './LobbyInstanceModal';
+import CreateLobby from './CreateLobby';
+import LobbyDetails from './LobbyDetails';
 import './Home.css'
 
 const GET_LOBBIES = gql`
@@ -26,8 +26,8 @@ const GET_USERNAME = gql`
 
 const Home = () => {
   const location = useLocation();
-  const [isCreateLobbyModalOpen, setCreateLobbyModalOpen] = useState(false);
-  const [isLobbyInstanceModalOpen, setLobbyInstanceModalOpen] = useState(false);
+  const [isCreateLobbyOpen, setCreateLobbyOpen] = useState(false);
+  const [isLobbyDetailsOpen, setLobbyDetailsOpen] = useState(false);
   const [selectedLobbyId, setSelectedLobbyId] = useState(null);
 
   const { loading: usernameLoading, error: usernameError, data: usernameData } = useQuery(GET_USERNAME, {
@@ -38,26 +38,26 @@ const Home = () => {
   });
 
   const handleCreateNew = () => {
-    setCreateLobbyModalOpen(true);
+    setCreateLobbyOpen(true);
   };
 
-  const closeCreateLobbyModal = () => {
-    setCreateLobbyModalOpen(false);
+  const closeCreateLobby = () => {
+    setCreateLobbyOpen(false);
   };
 
   const handleLobbyClick = (lobbyId) => {
     setSelectedLobbyId(parseInt(lobbyId));
-    setLobbyInstanceModalOpen(true);
+    setLobbyDetailsOpen(true);
   };
 
-  const closeLobbyInstanceModal = () => {
-    setLobbyInstanceModalOpen(false);
+  const closeLobbyDetails = () => {
+    setLobbyDetailsOpen(false);
     setSelectedLobbyId(null);
   };
 
   const handleLobbyCreated = (lobbyId) => {
     setSelectedLobbyId(lobbyId);
-    setLobbyInstanceModalOpen(true);
+    setLobbyDetailsOpen(true);
   };
 
   useEffect(() => {
@@ -105,15 +105,15 @@ const Home = () => {
          <button onClick={handleCreateNew}>Create New</button>
         </div>
       </div>
-      <CreateLobbyModal
-        isOpen={isCreateLobbyModalOpen}
-        onClose={closeCreateLobbyModal}
+      <CreateLobby
+        isOpen={isCreateLobbyOpen}
+        onClose={closeCreateLobby}
         onLobbyCreated={handleLobbyCreated}
       />
       {selectedLobbyId && (
-        <LobbyInstanceModal
-          isOpen={isLobbyInstanceModalOpen}
-          onClose={closeLobbyInstanceModal}
+        <LobbyDetails
+          isOpen={isLobbyDetailsOpen}
+          onClose={closeLobbyDetails}
           lobbyId={selectedLobbyId ? parseInt(selectedLobbyId) : null}
         />
       )}

@@ -2,25 +2,25 @@ import { useState } from 'react';
 import Header from './Header';
 import Footer from './Footer';
 import PropTypes from 'prop-types';
-import ProfileModal from './ProfileModal';
+import Profile from './Profile';
 
 const Layout = ({ children }) => {
 
-  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const openProfileModal = () => {
-    setIsProfileModalOpen(true);
+    setIsProfileOpen(true);
   };
 
   const closeProfileModal = () => {
-    setIsProfileModalOpen(false);
+    setIsProfileOpen(false);
   };
   return (
     <div className="layout">
       <Header openProfileModal={openProfileModal} />
       <main>{children}</main>
       <Footer />
-      <ProfileModal isOpen={isProfileModalOpen} onClose={closeProfileModal} />
+      <Profile isOpen={isProfileOpen} onClose={closeProfileModal} />
     </div>
   );
 };

@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useMutation, gql } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import SignupModal from './SignupModal';
-import './LoginModal.css';
+import Signup from './Signup';
+import './Login.css';
 
 const LOGIN_USER = gql`
   mutation Login($email: String!, $password: String!) {
@@ -14,7 +14,7 @@ const LOGIN_USER = gql`
   }
 `;
 
-const LoginModal = ({ isOpen, onClose }) => {
+const Login = ({ isOpen, onClose }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -80,14 +80,14 @@ const LoginModal = ({ isOpen, onClose }) => {
           </p>
         </div>
       </div>
-      {showSignupModal && <SignupModal isOpen={true} onClose={() => setShowSignupModal(false)} />}
+      {showSignupModal && <Signup isOpen={true} onClose={() => setShowSignupModal(false)} />}
     </>
   );
 };
 
-LoginModal.propTypes = {
+Login.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
 };
 
-export default LoginModal;
+export default Login;
