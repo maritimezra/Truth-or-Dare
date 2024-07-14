@@ -1,6 +1,7 @@
 import { useQuery, gql, useApolloClient, useMutation } from '@apollo/client';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
+import './Profile.css';
 
 const ME = gql`
   query Me {
@@ -52,7 +53,7 @@ const Profile = ({ isOpen, onClose }) => {
   const { username, email, gender } = data.me;
 
   return (
-    <div className="modal">
+    <div className="profile-modal">
       <div className="modal-content">
         <span className="close" onClick={onClose}>&times;</span>
         <h2>Profile Details</h2>
