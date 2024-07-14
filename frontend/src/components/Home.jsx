@@ -3,6 +3,7 @@ import { useQuery, gql } from '@apollo/client';
 import { useLocation } from 'react-router-dom';
 import CreateLobbyModal from './CreateLobbyModal';
 import LobbyInstanceModal from './LobbyInstanceModal';
+import './Home.css'
 
 const GET_LOBBIES = gql`
   query GetLobbies {
@@ -69,21 +70,26 @@ const Home = () => {
   const lobbies = data.getLobbies;
   const username = usernameData?.getUsername?.username;
 
+
   return (
-    <div>
-      <div>
+    <div className="home">
+      <div className="username">
         <h2>Hi, {username}</h2>
       </div>
-      <div>
+      <div className="lobbies">
         <h2>Your Lobbies</h2>
+        <div className="lobbylist">
         <ul>
           {lobbies.map((lobby) => (
-            <li key={lobby.id} onClick={() => handleLobbyClick(lobby.id)} style={{ cursor: 'pointer' }}>
+            <ul key={lobby.id} onClick={() => handleLobbyClick(lobby.id)} style={{ cursor: 'pointer' }}>
               <h3>{lobby.name}</h3>
-            </li>
+            </ul>
           ))}
         </ul>
-        <button onClick={handleCreateNew}>Create New</button>
+        </div>
+        <div className="createnew">
+         <button onClick={handleCreateNew}>Create New</button>
+        </div>
       </div>
       <CreateLobbyModal
         isOpen={isCreateLobbyModalOpen}

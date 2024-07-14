@@ -146,7 +146,6 @@ const Tod = () => {
 
   return (
     <div>
-      <h1>Truth or Dare</h1>
       <h2>Current Turn: {players[currentTurn]}</h2>
       <button onClick={handleTruth}>Truth</button>
       <button onClick={handleDare}>Dare</button>
