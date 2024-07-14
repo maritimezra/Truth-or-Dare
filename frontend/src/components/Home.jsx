@@ -73,8 +73,22 @@ const Home = () => {
 
   return (
     <div className="home">
+      <div className="area" >
+            <ul class="circles">
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+            </ul>
+      </div >
       <div className="username">
-        <h2>Hi, {username}</h2>
+        <h2>Hi,{username}</h2>
       </div>
       <div className="lobbies">
         <h2>Your Lobbies</h2>

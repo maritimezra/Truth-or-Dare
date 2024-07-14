@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useQuery, gql } from '@apollo/client';
+import './TOD.css';
 
+// Import JSON questions here
 import couplesMildTruthQuestions from './questions/couples/mild/truth.json';
 import couplesMildDareQuestions from './questions/couples/mild/dare.json';
 import couplesModTruthQuestions from './questions/couples/moderate/truth.json';
@@ -21,6 +23,8 @@ import teensModDareQuestions from './questions/teens/moderate/dare.json';
 import teensWildTruthQuestions from './questions/teens/wild/truth.json';
 import teensWildDareQuestions from './questions/teens/wild/dare.json';
 
+
+
 const GET_LOBBY = gql`
   query GetLobby($lobbyId: Int!) {
     getLobby(lobbyId: $lobbyId) {
@@ -39,7 +43,6 @@ const GET_LINEUP = gql`
 
 const Tod = () => {
   const location = useLocation();
-
   const searchParams = new URLSearchParams(location.search);
   const lobbyId = searchParams.get('id');
 
@@ -141,12 +144,12 @@ const Tod = () => {
   };
 
   const handleEndGame = () => {
-    navigate('/')
-  }
+    navigate('/');
+  };
 
   return (
-    <div>
-      <h2>Current Turn: {players[currentTurn]}</h2>
+    <div className="container">
+      <h2 className="effect">Current Turn: {players[currentTurn]}</h2>
       <button onClick={handleTruth}>Truth</button>
       <button onClick={handleDare}>Dare</button>
       <div>
