@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useMutation, gql } from '@apollo/client';
 import PropTypes from 'prop-types';
-import './CreateLobbyModal.css';
+import './CreateLobby.css';
 
 const CREATE_LOBBY = gql`
   mutation CreateLobby($name: String!, $level: String!, $category: String!) {
@@ -23,7 +23,7 @@ const CREATE_LOBBY = gql`
 const levels = ["Mild", "Moderate", "Wild"];
 const categories = ["GameNight", "Couples", "Teens"];
 
-const CreateLobbyModal = ({ isOpen, onClose, onLobbyCreated }) => {
+const CreateLobby = ({ isOpen, onClose, onLobbyCreated }) => {
   const [name, setName] = useState('');
   const [level, setLevel] = useState('');
   const [category, setCategory] = useState('');
@@ -75,10 +75,10 @@ const CreateLobbyModal = ({ isOpen, onClose, onLobbyCreated }) => {
   );
 };
 
-CreateLobbyModal.propTypes = {
+CreateLobby.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onLobbyCreated: PropTypes.func.isRequired,
 };
 
-export default CreateLobbyModal;
+export default CreateLobby;

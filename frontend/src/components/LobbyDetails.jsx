@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, gql, useApolloClient } from '@apollo/client';
 import PropTypes from 'prop-types';
-import './LobbyInstanceModal.css';
+import './LobbyDetails.css';
 
 const GET_LOBBY = gql`
   query GetLobby($lobbyId: Int!) {
@@ -63,7 +63,7 @@ const GET_LOBBYID = gql`
 `;
 
 
-const LobbyInstanceModal = ({ isOpen, onClose, lobbyId }) => {
+const LobbyDetails = ({ isOpen, onClose, lobbyId }) => {
   const navigate = useNavigate();
   const client = useApolloClient();
 
@@ -238,10 +238,10 @@ const LobbyInstanceModal = ({ isOpen, onClose, lobbyId }) => {
   );
 };
 
-LobbyInstanceModal.propTypes = {
+LobbyDetails.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   lobbyId: PropTypes.number.isRequired,
 };
 
-export default LobbyInstanceModal;
+export default LobbyDetails;

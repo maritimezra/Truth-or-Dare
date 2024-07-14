@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useMutation, gql } from '@apollo/client';
 import PropTypes from 'prop-types';
-import './SignupModal.css'; 
+import './Signup.css'; 
 
 const CREATE_USER = gql`
   mutation ($email: String!, $password: String!, $username: String!, $gender: String!) {
@@ -21,7 +21,7 @@ const genderOptions = [
   { value: 'N', label: 'Nonbinary' },
 ];
 
-const SignupModal = ({ isOpen, onClose }) => {
+const Signup = ({ isOpen, onClose }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
@@ -40,9 +40,6 @@ const SignupModal = ({ isOpen, onClose }) => {
       });
   };
 
-  const handleBack = () => {
-    onClose();
-  };
 
   if (!isOpen) return null;
 
@@ -50,6 +47,7 @@ const SignupModal = ({ isOpen, onClose }) => {
     <div className="modal">
       <div className="modal-content">
         <h2>Create Account</h2>
+        <span className="close" onClick={onClose}>&times;</span>
         <input
           type="email"
           placeholder="Email"
@@ -76,16 +74,15 @@ const SignupModal = ({ isOpen, onClose }) => {
         />
         <div className="modal-buttons">
           <button onClick={handleSignup}>Sign Up</button>
-          <button onClick={handleBack}>Back</button>
         </div>
       </div>
     </div>
   );
 };
 
-SignupModal.propTypes = {
+Signup.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
 };
 
-export default SignupModal;
+export default Signup;

@@ -1,22 +1,22 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import LoginModal from './LoginModal'; 
+import Login from './Login'; 
 
 const PrivateRoute = ({ element: Component }) => {
   const token = localStorage.getItem('token');
-  const [showLoginModal, setShowLoginModal] = useState(!token);
+  const [showLogin, setShowLogin] = useState(!token);
 
   useEffect(() => {
     if (!token) {
-      setShowLoginModal(true);
+      setShowLogin(true);
     }
   }, [token]);
 
-  const handleCloseModal = () => {
-    setShowLoginModal(false);
+  const handleCloseLogin = () => {
+    setShowLogin(false);
   };
 
-  return token ? <Component /> : <LoginModal isOpen={showLoginModal} onClose={handleCloseModal} />;
+  return token ? <Component /> : <Login isOpen={showLogin} onClose={handleCloseLogin} />;
 };
 
 PrivateRoute.propTypes = {

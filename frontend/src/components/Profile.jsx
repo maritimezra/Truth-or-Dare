@@ -25,7 +25,7 @@ const genderMapping = {
   N: 'Nonbinary'
 };
 
-const ProfileModal = ({ isOpen, onClose }) => {
+const Profile = ({ isOpen, onClose }) => {
   const { loading, error, data } = useQuery(ME);
   const [logout] = useMutation(LOGOUT);
 
@@ -65,9 +65,9 @@ const ProfileModal = ({ isOpen, onClose }) => {
   );
 };
 
-ProfileModal.propTypes = {
+Profile.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired
 };
 
-export default ProfileModal;
+export default Profile;
