@@ -74,7 +74,7 @@ const Home = () => {
   return (
     <div className="home">
       <div className="area" >
-            <ul class="circles">
+            <ul className="circles">
                     <li></li>
                     <li></li>
                     <li></li>
