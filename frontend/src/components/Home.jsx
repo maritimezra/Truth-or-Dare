@@ -73,22 +73,23 @@ const Home = () => {
 
   return (
     <div className="home">
-      <div className="area" >
-            <ul className="circles">
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-            </ul>
-      </div >
+      <div className="area">
+        <ul className="circles">
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+        </ul>
+      </div>
+
       <div className="username">
-        <h2>Hi,{username}</h2>
+        <h2><span class="scribble-underline">Hi, {username}</span></h2>
       </div>
       <div className="lobbies">
         <h2>Your Lobbies</h2>

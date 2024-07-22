@@ -13,7 +13,7 @@ const Header = ({ openProfileModal }) => {
 
   return (
     <header className="header">
-      <h1>Truth or Dare</h1>
+      <h1><a href="home"></a>Truth or Dare</h1>
       <div className="user-info">
         <span onClick={handleProfileClick} className="profile-icon">
           <FontAwesomeIcon icon={faUser} />
