@@ -87,6 +87,7 @@ const Home = () => {
           <li></li>
         </ul>
       </div>
+
       <div className="username">
         <h2><span class="scribble-underline">Hi, {username}</span></h2>
       </div>
