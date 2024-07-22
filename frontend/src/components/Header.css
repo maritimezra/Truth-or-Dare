@@ -3,19 +3,20 @@
   justify-content: space-between;
   align-items: center;
   padding: 15px 20px;
-  background-color: #f5f5f5;
-  border-bottom: 1px solid #ddd;
+  padding-bottom: 20px;
+  background-color: #4e54c8;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1000;
+  z-index: 3;
+ 
 }
 
 .header h1 {
   margin: 0;
   font-size: 24px;
-  color: black;
+  color: rgb(255, 255, 255);
   font-family: 'Lato', sans-serif;
 }
 
@@ -27,9 +28,9 @@
 .profile-icon {
   cursor: pointer;
   font-size: 24px;
-  color: #333;
+  color: #ffffff;
 }
 
 .profile-icon:hover {
-  color: blue;
+  color: #da84f0;
 }

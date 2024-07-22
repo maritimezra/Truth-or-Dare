@@ -147,18 +147,30 @@ const Tod = () => {
     navigate('/');
   };
 
+
+  
+
   return (
-    <div className="container">
-      <h2 className="effect">Current Turn: {players[currentTurn]}</h2>
-      <button onClick={handleTruth}>Truth</button>
-      <button onClick={handleDare}>Dare</button>
-      <div>
+    <div className="main-container">
+      <div className="container">
+      <h2 className="current-turn">Current Turn: <span className="animate-character">{players[currentTurn]}</span></h2>
+      <div className="question">
         <p>{question}</p>
       </div>
-      <button onClick={handleNextTurn}>Next Turn</button>
-      <button onClick={handleEndGame}>End Game</button>
+      <div className="group-button">
+        <button className="button" onClick={handleTruth}>Truth</button>
+        <button className="button" onClick={handleDare}>Dare</button>
+      </div>
+      <div className="top-right-button">
+        <button className="button" onClick={handleNextTurn}>Next Turn</button>
+      </div>
+      <div className="bottom-right-button">
+        <button className="button-end-game" onClick={handleEndGame}>End Game</button>
+      </div>
+      </div>
     </div>
   );
+  
 };
 
 export default Tod;
