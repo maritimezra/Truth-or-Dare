@@ -89,7 +89,7 @@ const Home = () => {
       </div>
 
       <div className="username">
-        <h2><span class="scribble-underline">Hi, {username}</span></h2>
+        <h2><span className="scribble-underline">Hi, {username}</span></h2>
       </div>
       <div className="lobbies">
         <h2>Your Lobbies</h2>

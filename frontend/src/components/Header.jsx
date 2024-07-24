@@ -1,19 +1,25 @@
 import PropTypes from 'prop-types';
+import { useNavigate} from 'react-router-dom';
 import './Header.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 
 
 const Header = ({ openProfileModal }) => {
+  const navigate = useNavigate();
   
 
   const handleProfileClick = () => {
     openProfileModal();
   };
 
+  const handleTitleClick = () => {
+    navigate('/');
+  }
+
   return (
     <header className="header">
-      <h1><a href="home"></a>Truth or Dare</h1>
+      <h1 onClick={handleTitleClick}>Truth or Dare</h1>
       <div className="user-info">
         <span onClick={handleProfileClick} className="profile-icon">
           <FontAwesomeIcon icon={faUser} />
