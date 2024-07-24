@@ -3,7 +3,7 @@ import { useQuery, gql } from '@apollo/client';
 import { useLocation } from 'react-router-dom';
 import CreateLobby from './CreateLobby';
 import LobbyDetails from './LobbyDetails';
-import './Home.css'
+import '../styles/Home.css'
 
 const GET_LOBBIES = gql`
   query GetLobbies {

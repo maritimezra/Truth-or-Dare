@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useQuery, gql } from '@apollo/client';
-import './TOD.css';
+import '../styles/TOD.css';
 
-// Import JSON questions here
 import couplesMildTruthQuestions from './questions/couples/mild/truth.json';
 import couplesMildDareQuestions from './questions/couples/mild/dare.json';
 import couplesModTruthQuestions from './questions/couples/moderate/truth.json';

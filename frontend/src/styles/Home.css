@@ -121,7 +121,7 @@ html, body {
   left: 90%;
   animation-delay: 7s;
   animation-duration: 15s;
-  background-image: url('./Images/1.png');
+  background-image: url('../Images/1.png');
 }
 
 .circles li:nth-child(2) {
@@ -129,7 +129,7 @@ html, body {
   animation-delay: 12s;
   animation-duration: 20s;
   transform: translateY(0) rotate(45deg);
-  background-image: url('./Images/2.png');
+  background-image: url('../Images/2.png');
 }
 
 .circles li:nth-child(3) {
@@ -137,140 +137,140 @@ html, body {
   animation-delay: 5s;
   animation-duration: 10s;
   transform: translateY(0) rotate(-45deg);
-  background-image: url('./Images/3.png');
+  background-image: url('../Images/3.png');
 }
 
 .circles li:nth-child(4) {
   left: 60%;
   animation-delay: 18s;
   animation-duration: 25s;
-  background-image: url('./Images/4.png');
+  background-image: url('../Images/4.png');
 }
 
 .circles li:nth-child(5) {
   left: 50%;
   animation-delay: 9s;
   animation-duration: 17s;
-  background-image: url('./Images/5.png');
+  background-image: url('../Images/5.png');
 }
 
 .circles li:nth-child(6) {
   left: 40%;
   animation-delay: 14s;
   animation-duration: 22s;
-  background-image: url('./Images/6.png');
+  background-image: url('../Images/6.png');
 }
 
 .circles li:nth-child(7) {
   left: 30%;
   animation-delay: 6s;
   animation-duration: 12s;
-  background-image: url('./Images/7.png');
+  background-image: url('../Images/7.png');
 }
 
 .circles li:nth-child(8) {
   left: 20%;
   animation-delay: 21s;
   animation-duration: 28s;
-  background-image: url('./Images/8.png');
+  background-image: url('../Images/8.png');
 }
 
 .circles li:nth-child(9) {
   left: 10%;
   animation-delay: 11s;
   animation-duration: 19s;
-  background-image: url('./Images/9.png');
+  background-image: url('../Images/9.png');
 }
 
 .circles li:nth-child(10) {
   left: 15%;
   animation-delay: 16s;
   animation-duration: 24s;
-  background-image: url('./Images/10.png');
+  background-image: url('../Images/10.png');
 }
 
 .circles li:nth-child(11) {
   left: 30%;
   animation-delay: 8s;
   animation-duration: 16s;
-  background-image: url('./Images/11.png');
+  background-image: url('../Images/11.png');
 }
 
 .circles li:nth-child(12) {
   left: 45%;
   animation-delay: 13s;
   animation-duration: 21s;
-  background-image: url('./Images/12.png');
+  background-image: url('../Images/12.png');
 }
 
 .circles li:nth-child(13) {
   left: 60%;
   animation-delay: 10s;
   animation-duration: 18s;
-  background-image: url('./Images/13.png');
+  background-image: url('../Images/13.png');
 }
 
 .circles li:nth-child(14) {
   left: 75%;
   animation-delay: 19s;
   animation-duration: 26s;
-  background-image: url('./Images/14.png');
+  background-image: url('../Images/14.png');
 }
 
 .circles li:nth-child(15) {
   left: 90%;
   animation-delay: 15s;
   animation-duration: 23s;
-  background-image: url('./Images/15.png');
+  background-image: url('../Images/15.png');
 }
 
 .circles li:nth-child(16) {
   left: 85%;
   animation-delay: 22s;
   animation-duration: 29s;
-  background-image: url('./Images/16.png');
+  background-image: url('../Images/16.png');
 }
 
 .circles li:nth-child(17) {
   left: 75%;
   animation-delay: 9s;
   animation-duration: 17s;
-  background-image: url('./Images/17.png');
+  background-image: url('../Images/17.png');
 }
 
 .circles li:nth-child(18) {
   left: 65%;
   animation-delay: 17s;
   animation-duration: 25s;
-  background-image: url('./Images/18.png');
+  background-image: url('../Images/18.png');
 }
 
 .circles li:nth-child(19) {
   left: 55%;
   animation-delay: 12s;
   animation-duration: 20s;
-  background-image: url('./Images/19.png');
+  background-image: url('../Images/19.png');
 }
 
 .circles li:nth-child(20) {
   left: 45%;
   animation-delay: 20s;
   animation-duration: 27s;
-  background-image: url('./Images/20.png');
+  background-image: url('../Images/20.png');
 }
 
 .circles li:nth-child(21) {
   left: 35%;
   animation-delay: 14s;
   animation-duration: 22s;
-  background-image: url('./Images/21.png');
+  background-image: url('../Images/21.png');
 }
 
 .circles li:nth-child(22) {
   right: 25%;
   animation-delay: 25s;
   animation-duration: 30s;
-  background-image: url('./Images/22.png');
+  background-image: url('../Images/22.png');
 }
 
 

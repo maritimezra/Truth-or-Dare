@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useMutation, gql } from '@apollo/client';
 import PropTypes from 'prop-types';
-import './CreateLobby.css';
+import '../styles/CreateLobby.css';
 
 const CREATE_LOBBY = gql`
   mutation CreateLobby($name: String!, $level: String!, $category: String!) {

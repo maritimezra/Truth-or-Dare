@@ -3,7 +3,7 @@ import { useMutation, gql } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Signup from './Signup';
-import './Login.css';
+import '../styles/Login.css';
 
 const LOGIN_USER = gql`
   mutation Login($email: String!, $password: String!) {

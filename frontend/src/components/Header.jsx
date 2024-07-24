@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useNavigate} from 'react-router-dom';
-import './Header.css';
+import '../styles/Header.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, gql, useApolloClient } from '@apollo/client';
 import PropTypes from 'prop-types';
-import './LobbyDetails.css';
+import '../styles/LobbyDetails.css';
 
 const GET_LOBBY = gql`
   query GetLobby($lobbyId: Int!) {
