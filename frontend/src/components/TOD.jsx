@@ -3,24 +3,24 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useQuery, gql } from '@apollo/client';
 import '../styles/TOD.css';
 
-import couplesMildTruthQuestions from './questions/couples/mild/truth.json';
-import couplesMildDareQuestions from './questions/couples/mild/dare.json';
-import couplesModTruthQuestions from './questions/couples/moderate/truth.json';
-import couplesModDareQuestions from './questions/couples/moderate/dare.json';
-import couplesWildTruthQuestions from './questions/couples/wild/truth.json';
-import couplesWildDareQuestions from './questions/couples/wild/dare.json';
-import gamenightMildTruthQuestions from './questions/gamenight/mild/truth.json';
-import gamenightMildDareQuestions from './questions/gamenight/mild/dare.json';
-import gamenightModTruthQuestions from './questions/gamenight/moderate/truth.json';
-import gamenightModDareQuestions from './questions/gamenight/moderate/dare.json';
-import gamenightWildTruthQuestions from './questions/gamenight/wild/truth.json';
-import gamenightWildDareQuestions from './questions/gamenight/wild/dare.json';
-import teensMildTruthQuestions from './questions/teens/mild/truth.json';
-import teensMildDareQuestions from './questions/teens/mild/dare.json';
-import teensModTruthQuestions from './questions/teens/moderate/truth.json';
-import teensModDareQuestions from './questions/teens/moderate/dare.json';
-import teensWildTruthQuestions from './questions/teens/wild/truth.json';
-import teensWildDareQuestions from './questions/teens/wild/dare.json';
+import couplesMildTruthQuestions from '../questions/couples/mild/truth.json';
+import couplesMildDareQuestions from '../questions/couples/mild/dare.json';
+import couplesModTruthQuestions from '../questions/couples/moderate/truth.json';
+import couplesModDareQuestions from '../questions/couples/moderate/dare.json';
+import couplesWildTruthQuestions from '../questions/couples/wild/truth.json';
+import couplesWildDareQuestions from '../questions/couples/wild/dare.json';
+import gamenightMildTruthQuestions from '../questions/gamenight/mild/truth.json';
+import gamenightMildDareQuestions from '../questions/gamenight/mild/dare.json';
+import gamenightModTruthQuestions from '../questions/gamenight/moderate/truth.json';
+import gamenightModDareQuestions from '../questions/gamenight/moderate/dare.json';
+import gamenightWildTruthQuestions from '../questions/gamenight/wild/truth.json';
+import gamenightWildDareQuestions from '../questions/gamenight/wild/dare.json';
+import teensMildTruthQuestions from '../questions/teens/mild/truth.json';
+import teensMildDareQuestions from '../questions/teens/mild/dare.json';
+import teensModTruthQuestions from '../questions/teens/moderate/truth.json';
+import teensModDareQuestions from '../questions/teens/moderate/dare.json';
+import teensWildTruthQuestions from '../questions/teens/wild/truth.json';
+import teensWildDareQuestions from '../questions/teens/wild/dare.json';
 
 
 
