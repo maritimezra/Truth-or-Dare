@@ -25,6 +25,9 @@ const GET_USERNAME = gql`
 `;
 
 const Home = () => {
+
+  //Add placeholder content for the landing(home) page for the new users now that the login modal is delayed.
+
   const location = useLocation();
   const [isCreateLobbyOpen, setCreateLobbyOpen] = useState(false);
   const [isLobbyDetailsOpen, setLobbyDetailsOpen] = useState(false);

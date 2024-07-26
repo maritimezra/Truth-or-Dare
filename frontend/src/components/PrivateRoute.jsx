@@ -6,6 +6,9 @@ const PrivateRoute = ({ element: Component }) => {
   const token = localStorage.getItem('token');
   const [showLogin, setShowLogin] = useState(!token);
 
+  // todo: Add a delay function/feture for the login modal to allow new/onboarding users to learn about the app
+  // before exploring features
+
   useEffect(() => {
     if (!token) {
       setShowLogin(true);
