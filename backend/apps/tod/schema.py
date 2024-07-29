@@ -136,6 +136,8 @@ class Mutation:
         player.save()
         return player
 
+    # todo: add delete/edit lobby mutations
+
 
 schema = strawberry.Schema(
     query=Query,
